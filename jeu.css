@@ -1,0 +1,23 @@
+#titre {
+    margin-top: 60px;
+    position: relative;
+    text-align: center;
+}
+
+#jeu {
+    position: relative;
+    text-align: center;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    height: 400px;
+}
+
+#info {
+    display: flex;
+    flex-direction: column;
+    width: 90px;
+    height: 400px;
+    margin-left: 10px;
+}
