@@ -206,7 +206,7 @@ var grille = document.getElementById("gille");
 var tetris = document.createElement("canvas");
 grille.appendChild(tetris)
 tetris.width = 210;
-tetris.height = 400;
+tetris.height = 399;
 let ctx = tetris.getContext("2d")
 
 var info = document.getElementById("info");
