@@ -39,8 +39,8 @@
     padding-left: 8px;
     padding-right: 8px;
     border-radius: 2px;
-    bottom: -110px;
-    right: 120px;
+    bottom: -20px;
+    right: 85px;
     opacity: 0;
     transition: opacity 0.15s;
     pointer-events: none;
@@ -49,6 +49,9 @@
 
 #boutonPres:hover{
     background: rgba(0,0,0,0.2);
+    border-style: solid;
+    border-width: 1px;
+    border-color: black;
     border-radius: 10%;
 }
 
@@ -76,7 +79,7 @@
     padding-right: 8px;
     border-radius: 2px;
     bottom: -70px;
-    right: 50px;
+    right: 30px;
     opacity: 0;
     transition: opacity 0.15s;
     pointer-events: none;
@@ -112,7 +115,7 @@
     padding-right: 8px;
     border-radius: 2px;
     bottom: -110px;
-    right: 120px;
+    right: 40px;
     opacity: 0;
     transition: opacity 0.15s;
     pointer-events: none;
