@@ -212,18 +212,18 @@ let ctx = tetris.getContext("2d")
 var info = document.getElementById("info");
 var scoreText =  document.createElement("div");
 scoreText.innerHTML = "Score";
-scoreText.style = "margin-top : 20px;font-size:25px"
+scoreText.style = "margin-top : 20px;font-size:25px; font-family: 'Alkatra', cursive;"
 var scoreAff = document.createElement("div");
 scoreAff.innerHTML = score;
-scoreAff.style = "border-style: solid; margin-top : 5px; margin-bottom: 45px;padding-top:7px; padding-bottom:7px; font-size:25px";
+scoreAff.style = "border-style: solid; margin-top : 5px; margin-bottom: 45px;padding-top:7px; padding-bottom:7px; font-size:25px; font-family: 'Alkatra', cursive;";
 var nextText = document.createElement("div");
 nextText.innerHTML = "Next";
-nextText.style = "margin-bottom: 10px; font-size:25px";
+nextText.style = "margin-bottom: 10px; font-size:25px; font-family: 'Alkatra', cursive;";
 var next = document.createElement("canvas");
 let nextctx = next.getContext("2d")
 next.style = "margin-left:20px;"
 next.width = 84;
-next.height = 168;
+next.height = 105;
 
 
 info.appendChild(scoreText);
@@ -245,10 +245,6 @@ function renderGrid() {
 }
 
 function renderGridNext(nbr1, nbr2) {
-    nextctx.clearRect(0, 0, next.width, next.height);
-    nextctx.fillStyle = "#FFFFFF";
-    nextctx.fillRect(0, 0, next.width, next.height);
-
     nextgrid[0]= shapes[nbr1][0]
     nextgrid[1]= shapes[nbr1][1]
     nextgrid[3]= shapes[nbr2][0]
@@ -256,10 +252,7 @@ function renderGridNext(nbr1, nbr2) {
 
     for (let y = 0; y<5; y++) {
         for (let x = 0; x<4; x++) {
-            if (nextgrid[y][x] === 0) {
-                nextctx.fillStyle="#FFFFFF";
-                nextctx.fillRect(x*21, y*21, 20, 20);
-            } else {
+            if (nextgrid[y][x] !== 0) {
                 nextctx.fillStyle=colors[nextgrid[y][x]];
                 nextctx.fillRect(x*21, y*21, 20, 20);
             }
@@ -268,7 +261,7 @@ function renderGridNext(nbr1, nbr2) {
 }
 
 renderGrid();
-renderGridNext(1, 6); // nbr de 1 à 7
+renderGridNext(1, 5); // nbr de 1 à 7
 
 
 

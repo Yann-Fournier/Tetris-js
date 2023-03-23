@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="header.css" />
+        <link rel="stylesheet" type="text/css" href="jeu.css" />
+        <link rel="stylesheet" type="text/css" href="general.css" />
+        <title>TETRIS Pro JS</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Alkatra&display=swap" rel="stylesheet">
+    </head>
+
+    <body>
+        <header class="header" id="head">
+            <div class="presentation" id="pres">
+                <form id="formbouton" action="http://127.0.0.1:5500/presentation.html">
+                    <button id="boutonPres" type="submit">
+                        Présentation
+                        <div id="tooltip">
+                            Aller à la page de présentation du projet ?
+                        </div>
+                    </button>
+                </form>
+            </div>
+
+            <div id="commande">
+                <button id="boutonCom">
+                    Touches
+                    <div class="tooltip">
+                        Voici les touches pour jouer au jeux : <br />
+                            - Flèche droite: aller à droite, <br />
+                            - Flèche gauche: aller à gauche, <br />
+                            - Flèche du bas: faire descendre la pièce, <br />
+                            - z : tourner la pièce
+
+                    </div>
+                </button>
+            </div>
+
+            <div class="about" id="ab">
+                <button id="boutonAb">
+                    A propos
+                    <div class="tooltip">
+                        Bonjour, <br />
+                        je m'appel Yann Fournier et ce site à été créer à l'occasion d'un projet pour mon université. <br />
+                        N'hésiter pas à consulter la page de présentation du projet pour plus d'information sur comment il a été créer. 
+                    </div>
+                </button>
+            </div>
+            
+        </header>
+
+        <div id="titre"></div>
+        
+        <div id="jeu">
+            <div id="gille"></div>
+
+            <div id="info"></div>
+        </div>
+
+        <script type="text/javascript" src="index.js"></script>
+    </body>
+</html>
