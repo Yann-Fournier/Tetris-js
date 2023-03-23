@@ -143,7 +143,7 @@ let nextgrid = [
 ]
 
 // Est)ce qu'on peut la tourner (colision)
-let tournable = [true, true, true, true, true, true, true];
+let tournable = [false, true, true, true, true, true, true, true];
 
 // Différentes couleurs
 let colors = [
@@ -159,6 +159,10 @@ let colors = [
 
 // Forme de départ
 let shapes = [
+    [ // trucs de décalage
+        [0,0,0,0],
+        [0,0,0,0]
+    ],
     [ // 4 aligné 
         [0,0,0,0],
         [1,1,1,1]
@@ -172,8 +176,8 @@ let shapes = [
         [3,3,3,0]
     ],
     [ // carré 
-        [0,4,4,0],
-        [0,4,4,0]
+        [4,4,0,0],
+        [4,4,0,0]
     ],
     [ // T 
         [0,5,0,0],
@@ -193,9 +197,8 @@ let shapes = [
 // conpte le nombre de bloque par ligne
 let compteurs = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
 
+// Score du joueur
 let score = 0
-
-
 
 
 // Affichage ---------------------------------------------------------------------------------------------
@@ -218,7 +221,7 @@ nextText.innerHTML = "Next";
 nextText.style = "margin-bottom: 10px; font-size:25px";
 var next = document.createElement("canvas");
 let nextctx = next.getContext("2d")
-next.style = "margin-left:15px;"
+next.style = "margin-left:20px;"
 next.width = 84;
 next.height = 168;
 
@@ -241,7 +244,7 @@ function renderGrid() {
     }
 }
 
-function renderNext(nbr1, nbr2) {
+function renderGridNext(nbr1, nbr2) {
     nextctx.clearRect(0, 0, next.width, next.height);
     nextctx.fillStyle = "#FFFFFF";
     nextctx.fillRect(0, 0, next.width, next.height);
@@ -265,7 +268,7 @@ function renderNext(nbr1, nbr2) {
 }
 
 renderGrid();
-renderNext(1, 2);
+renderGridNext(1, 6); // nbr de 1 à 7
 
 
 
