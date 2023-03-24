@@ -1,9 +1,12 @@
-// Titre *************************************************************************************
+// Titre : TETRIS *************************************************************************************
 var title = document.getElementById("titre")
 var titre = document.createElement("canvas")
 var ti = titre.getContext("2d")
 title.appendChild(titre)
 titre.width = 380;
+titre.height = 85;
+
+
 // T de Tetris
 ti.fillStyle="#3A55FA"; // Bleu foncé
 ti.fillRect(0, 0, 15, 15);// 15+1
@@ -77,6 +80,7 @@ ti.stroke();
 // I de tetrIs
 ti.fillStyle="#DB3AFA"; // Violet
 ti.fillRect(282, 0, 15, 15);
+// ti.moveTo(289, 8)
 // ti.arc(289, 8, 8, 0, 2 * Math.PI, false);
 // ti.fillStyle = "#DB3AFA";
 // ti.fill();
@@ -103,10 +107,6 @@ ti.fillRect(365, 48, 15, 15);
 ti.fillRect(320, 64, 15, 15);
 ti.fillRect(335, 64, 15, 15);
 ti.fillRect(350, 64, 15, 15);
-
-
-
-
 
 
 // Jeu *********************************************************************************************
@@ -154,7 +154,7 @@ let colors = [
     "#EEFA3A", // JAU
     "#DB3AFA", // VIO
     "#FA5C3A", // ROU
-    "#59FA3A", // VER
+    "#59FA3A" // VER
 ];
 
 // Forme de départ
