@@ -121,17 +121,17 @@ let grid = [
     [0,0,0,0,0,0,0,0,0,0],
     [0,0,0,0,0,0,0,0,0,0],
     [0,0,0,0,0,0,0,0,0,0],
-    [1,0,2,0,0,0,3,0,0,0],
-    [1,0,2,0,0,0,3,0,0,0],
-    [1,0,2,2,0,3,3,0,0,0],
-    [1,0,0,0,0,0,0,0,0,0],
-    [0,4,4,0,0,0,5,0,0,0],
-    [0,4,4,0,0,0,5,5,0,0],
-    [0,0,0,0,0,0,5,0,0,0],
     [0,0,0,0,0,0,0,0,0,0],
-    [0,6,0,7,0,0,0,0,0,0],
-    [6,6,0,7,7,0,0,0,0,0],
-    [6,0,0,0,7,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0]
 ]
 
 let nextgrid = [
@@ -143,7 +143,7 @@ let nextgrid = [
 ]
 
 // Est)ce qu'on peut la tourner (colision)
-let tournable = [false, true, true, true, true, true, true, true];
+let tournable = [true, true, true, true, true, true, true];
 
 // Différentes couleurs
 let colors = [
@@ -159,10 +159,6 @@ let colors = [
 
 // Forme de départ
 let shapes = [
-    [ // trucs de décalage
-        [0,0,0,0],
-        [0,0,0,0]
-    ],
     [ // 4 aligné 
         [0,0,0,0],
         [1,1,1,1]
@@ -199,6 +195,9 @@ let compteurs = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
 
 // Score du joueur
 let score = 0
+
+// 
+var gameOn = true
 
 
 // Affichage ---------------------------------------------------------------------------------------------
@@ -245,6 +244,8 @@ function renderGrid() {
 }
 
 function renderGridNext(nbr1, nbr2) {
+    nextctx.clearRect(0, 0, next.width, next.height);
+
     nextgrid[0]= shapes[nbr1][0]
     nextgrid[1]= shapes[nbr1][1]
     nextgrid[3]= shapes[nbr2][0]
@@ -261,25 +262,69 @@ function renderGridNext(nbr1, nbr2) {
 }
 
 renderGrid();
-renderGridNext(1, 5); // nbr de 1 à 7
+//renderGridNext(3, 6); // nbr de 1 à 7
 
 
 
 // Fonctionnement ------------------------------------------------------------------------------------------------------
-// Event listener $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
-// document.addEventListener("keydown", (event)  => {
-//     document.getElementById("demo").innerHTML = event.code; 
-//     if (event.code === "ArrowLeft"){
-//        console.log("Left");
-//     } else if (event.code === "ArrowUp") {
-//         console.log("Up");
-//     } else if (event.code === "ArrowDown"){
-//         console.log("Down"); 
-//     } else if (event.code == "ArrowRight"){
-//         console.log("Right");
-//     } 
-//   });
+//Event listener ************************************************************************************
+document.addEventListener("keydown", (event)  => {
+    console.log(event.code)
+    if (event.code === "ArrowLeft"){
+       arrowLeft();
+    } else if (event.code == "ArrowRight"){
+        arrowRight();
+    } else if (event.code == "Space") {
+        space();
+    } else if (event.code == "keyW") {
+        keyW();
+    }
+});
 
-// document.addEventListener("click", function(){
-//     document.getElementById("demo").innerHTML = "Hello World";
-// });
+function arrowLeft() {
+    console.log("arrowLeft");
+}
+function arrowRight() {
+    console.log("arrowRight");
+}
+function space() {
+    console.log("Space");
+}
+function keyZ() {
+    console.log("KeyW")
+}
+
+
+function spawn() {
+    let nbr = Math.floor(Math.random() * 7);
+    for (let y=0; y < 2; y++) {
+        for (let x=0; x < 5; x++) {
+            grid[y][x+3] = shapes[nbr][y][x]
+            
+        }
+    }
+    renderGrid();
+}
+
+
+// setInterval(function loop() {
+//     let nbr1 = Math.floor(Math.random() * 7);
+//     let nbr2 = Math.floor(Math.random() * 7);
+//     console.log(nbr1, nbr2)
+//     renderGridNext(nbr1, nbr2);
+// }, 1000);
+
+
+
+// setInterval(function () {
+//     spawn()
+// }, 1000); 
+
+
+function loop() {
+}
+
+function main() {
+}
+
+//main();
