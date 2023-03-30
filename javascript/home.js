@@ -134,13 +134,18 @@ let grid = [
     [0,0,0,0,0,0,0,0,0,0]
 ]
 
-let nextgrid = [
-    [0,0,0,0],
-    [0,0,0,0],
-    [0,0,0,0], 
-    [0,0,0,0],
-    [0,0,0,0]
-]
+function nextGrid() {
+    let nextgrid = [
+        [0,0,0,0],
+        [0,0,0,0],
+        [0,0,0,0], 
+        [0,0,0,0],
+        [0,0,0,0]
+    ]
+    return nextgrid
+}
+
+let nextgrid = nextGrid();
 
 // Est)ce qu'on peut la tourner (colision)
 let tournable = [true, true, true, true, true, true, true];
@@ -160,33 +165,32 @@ let colors = [
 // Forme de départ
 let shapes = [
     [ // 4 aligné 
-        [0,0,0,0],
-        [1,1,1,1]
+        [1,1,1,1],
     ],
     [ // L vers la droite 
-        [0,0,2,0],
-        [2,2,2,0]
+        [0,0,2],
+        [2,2,2]
     ],
     [ // L vers la gauche 
-        [3,0,0,0],
-        [3,3,3,0]
+        [3,0,0,],
+        [3,3,3,]
     ],
     [ // carré 
-        [4,4,0,0],
-        [4,4,0,0]
+        [4,4],
+        [4,4]
     ],
     [ // T 
-        [0,5,0,0],
-        [5,5,5,0],
+        [0,5,0],
+        [5,5,5],
 
     ],
     [ // esca Mont 
-        [6,6,0,0],
-        [0,6,6,0]
+        [6,6,0],
+        [0,6,6]
     ],
     [ // esca Decs
-        [0,7,7,0],
-        [7,7,0,0]
+        [0,7,7],
+        [7,7,0]
     ],
 ];
 
@@ -245,20 +249,32 @@ function renderGrid() {
 
 function renderGridNext(nbr1, nbr2) {
     nextctx.clearRect(0, 0, next.width, next.height);
+    nextgrid = nextGrid();
 
-    nextgrid[0]= shapes[nbr1][0]
-    nextgrid[1]= shapes[nbr1][1]
-    nextgrid[3]= shapes[nbr2][0]
-    nextgrid[4]= shapes[nbr2][1]
+    if (nbr1 === 0) {
+        nextgrid[0] = shapes[nbr1][0];
+    } else {
+        nextgrid[0]= shapes[nbr1][0]
+        nextgrid[1]= shapes[nbr1][1]
+    }
+    
+    if (nbr2 === 0) {
+        nextgrid[3] = shapes[nbr2][0];
+    } else {
+        nextgrid[3]= shapes[nbr2][0]
+        nextgrid[4]= shapes[nbr2][1]
+    }
+    
 
-    for (let y = 0; y<5; y++) {
-        for (let x = 0; x<4; x++) {
+    for (let y = 0; y<nextgrid.length; y++) {
+        for (let x = 0; x<nextgrid[y].length; x++) {
             if (nextgrid[y][x] !== 0) {
                 nextctx.fillStyle=colors[nextgrid[y][x]];
                 nextctx.fillRect(x*21, y*21, 20, 20);
             }
         }
     }
+    console.log(nextgrid);
 }
 
 renderGrid();
@@ -294,12 +310,23 @@ function keyZ() {
     console.log("KeyW")
 }
 
+function down() {
+}
 
-function spawn() {
+function isTournable() {
+}
+
+
+function renderPiece() {
     let nbr = Math.floor(Math.random() * 7);
-    for (let y=0; y < 2; y++) {
-        for (let x=0; x < 5; x++) {
-            grid[y][x+3] = shapes[nbr][y][x]
+    for (let y=0; y < shapes[nbr].length; y++) {
+        for (let x=0; x < shapes[nbr][y].length; x++) {
+            if (nbr === 3) {
+                grid[y][x+4] = shapes[nbr][y][x]
+            } else {
+                grid[y][x+3] = shapes[nbr][y][x]
+            }
+            
             
         }
     }
@@ -307,19 +334,33 @@ function spawn() {
 }
 
 
-// setInterval(function loop() {
-//     let nbr1 = Math.floor(Math.random() * 7);
-//     let nbr2 = Math.floor(Math.random() * 7);
-//     console.log(nbr1, nbr2)
-//     renderGridNext(nbr1, nbr2);
-// }, 1000);
+setInterval(function loop() {
+    let nbr1 = Math.floor(Math.random() * 7);
+    let nbr2 = Math.floor(Math.random() * 7);
+    console.log(nbr1, nbr2)
+    renderGridNext(nbr1, nbr2);
+}, 1000);
 
 
 
-// setInterval(function () {
-//     spawn()
-// }, 1000); 
+setInterval(function () {
+    renderPiece()
+}, 1000);
 
+
+// function writeNext(i)
+// {
+//     if(i == 5)
+//         return;
+
+//     setTimeout(function()
+//     {
+//         writeNext(i + 1);
+//         console.log(i);
+
+//     }, 1000);
+// }
+//writeNext(1);
 
 function loop() {
 }
