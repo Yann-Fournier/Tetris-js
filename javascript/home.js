@@ -198,7 +198,12 @@ let shapes = [
 let compteurs = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
 
 // Score du joueur
-let score = 0
+let score = 0;
+let hightScore = 0;
+
+let abscisse = 3;
+let ordonnee = 0;
+let position = 0;
 
 // 
 var gameOn = true
@@ -274,7 +279,6 @@ function renderGridNext(nbr1, nbr2) {
             }
         }
     }
-    console.log(nextgrid);
 }
 
 renderGrid();
@@ -285,84 +289,126 @@ renderGrid();
 // Fonctionnement ------------------------------------------------------------------------------------------------------
 //Event listener ************************************************************************************
 document.addEventListener("keydown", (event)  => {
-    console.log(event.code)
+    console.log(event.code);
     if (event.code === "ArrowLeft"){
        arrowLeft();
     } else if (event.code == "ArrowRight"){
         arrowRight();
-    } else if (event.code == "Space") {
-        space();
-    } else if (event.code == "keyW") {
-        keyW();
+    // } else if (event.code == "Space") {
+    //     space();
+    } else if (event.code == "keyA") {
+        keyA();
+    } else if (event.code == "keyD") {
+        keyD();
     }
 });
 
 function arrowLeft() {
-    console.log("arrowLeft");
 }
 function arrowRight() {
-    console.log("arrowRight");
 }
-function space() {
-    console.log("Space");
+// function space() {
+// }
+function keyD() {
 }
-function keyZ() {
-    console.log("KeyW")
+function keyA() {
 }
 
-function down() {
-}
+// function down() {
+// }
 
 function isTournable() {
 }
 
+function collision() {
+    // if () {
+    //     return
+    // } 
 
-function renderPiece() {
-    let nbr = Math.floor(Math.random() * 7);
     for (let y=0; y < shapes[nbr].length; y++) {
         for (let x=0; x < shapes[nbr][y].length; x++) {
-            if (nbr === 3) {
-                grid[y][x+4] = shapes[nbr][y][x]
-            } else {
-                grid[y][x+3] = shapes[nbr][y][x]
+            if (grid[ord+y][abs+x] !== 0) {
+                return;
             }
-            
-            
+        }
+    }
+}
+
+function renderPiece(nbr, abs, ord, pos) {
+
+    for (let y=0; y < shapes[nbr].length; y++) {
+        for (let x=0; x < shapes[nbr][y].length; x++) {
+            grid[ord+y][abs+x] = shapes[nbr][y][x]
         }
     }
     renderGrid();
 }
 
 
-setInterval(function loop() {
-    let nbr1 = Math.floor(Math.random() * 7);
-    let nbr2 = Math.floor(Math.random() * 7);
-    console.log(nbr1, nbr2)
-    renderGridNext(nbr1, nbr2);
-}, 1000);
+
+function writeNext(i)
+{
+    if(i == 5)
+        return;
+
+    setTimeout(function()
+    {
+        writeNext(i + 1);
+        console.log(i);
+
+    }, 1000);
+}
 
 
 
-setInterval(function () {
-    renderPiece()
-}, 1000);
+function hideEndMenu () {
+    document.getElementById('end-menu').style.display = 'none';
+    //gameContainer.classList.remove('backdrop-blur');
+}
+
+function hideStartMenu () {
+    document.getElementById('start-menu').style.display = 'none';
+    //gameContainer.classList.remove('backdrop-blur');
+}
+
+function showEndMenu () {
+    document.getElementById('end-menu').style.display = 'block';
+    //gameContainer.classList.add('backdrop-blur');
+    document.getElementById('end-score').innerHTML = score;
+    // This way we update always our highscore at the end of our game
+    // if we have a higher high score than the previous
+    if (highScore < score) {
+        highScore = score;
+    }
+    document.getElementById('best-score').innerHTML = highScore;
+}
 
 
-// function writeNext(i)
-// {
-//     if(i == 5)
-//         return;
+// début du jeu quand on appuis sur le bouton play
+document.getElementById('play').addEventListener('click', function() {
+    hideStartMenu();
+    loop();
+})
 
-//     setTimeout(function()
-//     {
-//         writeNext(i + 1);
-//         console.log(i);
+// devbut du jeu quand on appuis sur le bouton play
+document.getElementById('restart').addEventListener('click', function() {
+    hideStartMenu();
+    loop();
+})
 
-//     }, 1000);
-// }
-//writeNext(1);
 
 function loop() {
+    setInterval(function () {
+        let nbr1 = Math.floor(Math.random() * 7);
+        let nbr2 = Math.floor(Math.random() * 7);
+        renderGridNext(nbr1, nbr2);
+    }, 1000);
+    
+    
+    setInterval(function () {
+        let nbr = Math.floor(Math.random() * 7);
+        renderPiece(nbr, abscisse, ordonnee, position);
+    }, 1000);
 }
 
 function main() {
