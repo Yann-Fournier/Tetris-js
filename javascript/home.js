@@ -112,27 +112,30 @@ ti.fillRect(350, 64, 15, 15);
 // Jeu *********************************************************************************************
 
 // Variables ---------------------------------------------------------------------------------------------
-let grid = [
-    [0,0,0,0,0,0,0,0,0,0],
-    [0,0,0,0,0,0,0,0,0,0],
-    [0,0,0,0,0,0,0,0,0,0],
-    [0,0,0,0,0,0,0,0,0,0],
-    [0,0,0,0,0,0,0,0,0,0],
-    [0,0,0,0,0,0,0,0,0,0],
-    [0,0,0,0,0,0,0,0,0,0],
-    [0,0,0,0,0,0,0,0,0,0],
-    [0,0,0,0,0,0,0,0,0,0],
-    [0,0,0,0,0,0,0,0,0,0],
-    [0,0,0,0,0,0,0,0,0,0],
-    [0,0,0,0,0,0,0,0,0,0],
-    [0,0,0,0,0,0,0,0,0,0],
-    [0,0,0,0,0,0,0,0,0,0],
-    [0,0,0,0,0,0,0,0,0,0],
-    [0,0,0,0,0,0,0,0,0,0],
-    [0,0,0,0,0,0,0,0,0,0],
-    [0,0,0,0,0,0,0,0,0,0],
-    [0,0,0,0,0,0,0,0,0,0]
-]
+function Grid() {
+    let grid = [
+        [0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0]
+    ];
+    return grid;
+}
 
 function nextGrid() {
     let nextgrid = [
@@ -145,6 +148,7 @@ function nextGrid() {
     return nextgrid
 }
 
+let grid = Grid();
 let nextgrid = nextGrid();
 
 // Est)ce qu'on peut la tourner (colision)
@@ -164,33 +168,144 @@ let colors = [
 
 // Forme de départ
 let shapes = [
-    [ // 4 aligné 
-        [1,1,1,1],
+    [ // 4 aligné
+        [
+            [1,1,1,1]
+        ],
+        [
+            [1],
+            [1],
+            [1],
+            [1]
+        ],
+        [
+            [1,1,1,1]
+        ],  
+        [
+            [1],
+            [1],
+            [1],
+            [1],
+        ]
     ],
-    [ // L vers la droite 
-        [0,0,2],
-        [2,2,2]
+    [ // L vers la droite
+        [
+            [0,0,2],
+            [2,2,2]
+        ],
+        [
+            [2,0],
+            [2,0],
+            [2,2],
+        ],
+        [
+            [2,2,2],
+            [2,0,0],
+        ],
+        [
+            [2,2],
+            [0,2],
+            [0,2],
+        ]
     ],
     [ // L vers la gauche 
-        [3,0,0,],
-        [3,3,3,]
+        [
+            [3,0,0,],
+            [3,3,3,]
+        ],
+        [
+            [3,3],
+            [3,0],
+            [3,0]
+        ],
+        [
+            [3,3,3],
+            [0,0,3]
+        ],
+        [
+            [0,3],
+            [0,3],
+            [3,3]
+        ]
+        
     ],
     [ // carré 
-        [4,4],
-        [4,4]
+        [
+            [4,4],
+            [4,4]
+        ],
+        [
+            [4,4],
+            [4,4]
+        ],
+        [
+            [4,4],
+            [4,4]
+        ],
+        [
+            [4,4],
+            [4,4]
+        ]
     ],
     [ // T 
-        [0,5,0],
-        [5,5,5],
-
+        [
+            [0,5,0],
+            [5,5,5],
+        ],
+        [
+            [5,0],
+            [5,5],
+            [5,0]
+        ],
+        [
+            [5,5,5],
+            [0,5,0]
+        ],
+        [
+            [0,5],
+            [5,5],
+            [0,5]
+        ],
     ],
     [ // esca Mont 
-        [6,6,0],
-        [0,6,6]
+        [
+            [6,6,0],
+            [0,6,6]
+        ],
+        [
+            [0,6],
+            [6,6],
+            [6,0]
+        ],
+        [
+            [6,6,0],
+            [0,6,6]
+        ],
+        [
+            [0,6],
+            [6,6],
+            [6,0]
+        ],
     ],
     [ // esca Decs
-        [0,7,7],
-        [7,7,0]
+        [
+            [0,7,7],
+            [7,7,0]
+        ],
+        [
+            [7,0],
+            [7,7],
+            [0,7]
+        ],
+        [
+            [0,7,7],
+            [7,7,0]
+        ],
+        [
+            [7,0],
+            [7,7],
+            [0,7]
+        ] 
     ],
 ];
 
@@ -201,6 +316,7 @@ let compteurs = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
 let score = 0;
 let hightScore = 0;
 
+let piece = 2;
 let abscisse = 3;
 let ordonnee = 0;
 let position = 0;
@@ -257,17 +373,17 @@ function renderGridNext(nbr1, nbr2) {
     nextgrid = nextGrid();
 
     if (nbr1 === 0) {
-        nextgrid[0] = shapes[nbr1][0];
+        nextgrid[0] = shapes[nbr1][0][0];
     } else {
-        nextgrid[0]= shapes[nbr1][0]
-        nextgrid[1]= shapes[nbr1][1]
+        nextgrid[0]= shapes[nbr1][0][0]
+        nextgrid[1]= shapes[nbr1][0][1]
     }
     
     if (nbr2 === 0) {
-        nextgrid[3] = shapes[nbr2][0];
+        nextgrid[3] = shapes[nbr2][0][0];
     } else {
-        nextgrid[3]= shapes[nbr2][0]
-        nextgrid[4]= shapes[nbr2][1]
+        nextgrid[3]= shapes[nbr2][0][0]
+        nextgrid[4]= shapes[nbr2][0][1]
     }
     
 
@@ -296,24 +412,71 @@ document.addEventListener("keydown", (event)  => {
         arrowRight();
     // } else if (event.code == "Space") {
     //     space();
-    } else if (event.code == "keyA") {
+    } else if (event.code == "KeyA") {
         keyA();
-    } else if (event.code == "keyD") {
+    } else if (event.code == "KeyD") {
         keyD();
     }
 });
 
 function arrowLeft() {
+    clearPiece(piece, abscisse, ordonnee, position);
+    if (abscisse>0) {
+        abscisse -= 1;
+    }
+    renderPiece(piece, abscisse, ordonnee, position);
 }
 function arrowRight() {
-}
-// function space() {
-// }
-function keyD() {
-}
-function keyA() {
+    clearPiece(piece, abscisse, ordonnee, position);
+    nbr = 10-shapes[piece][position][0].length;
+    if (abscisse<nbr) {
+        abscisse += 1;
+    }
+    renderPiece(piece, abscisse, ordonnee, position);
 }
 
+// function space() {
+// }
+
+function keyD() {
+    clearPiece(piece, abscisse, ordonnee, position);
+    if (position === 3) {
+        position = 0;
+    } else {
+        position += 1;
+    }
+    renderPiece(piece, abscisse, ordonnee, position);
+}
+function keyA() {
+    clearPiece(piece, abscisse, ordonnee, position);
+    if (position === 0) {
+        position = 3;
+    } else {
+        position -= 1;
+    }
+
+    renderPiece(piece, abscisse, ordonnee, position);
+}
+
+function reset() {
+    grid = Grid();
+    nextgrid = nextGrid();
+
+    // conpte le nombre de bloque par ligne
+    compteurs = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+
+    // Score du joueur
+    score = 0;
+    hightScore = 0;
+
+    piece = 0;
+    abscisse = 3;
+    ordonnee = 0;
+    position = 0;
+
+    // 
+    gameOn = true
+}
 // function down() {
 // }
 
@@ -335,10 +498,18 @@ function collision() {
 }
 
 function renderPiece(nbr, abs, ord, pos) {
+    for (let y=0; y < shapes[nbr][pos].length; y++) {
+        for (let x=0; x < shapes[nbr][pos][y].length; x++) {
+            grid[ord+y][abs+x] = shapes[nbr][pos][y][x];
+        }
+    }
+    renderGrid();
+}
 
-    for (let y=0; y < shapes[nbr].length; y++) {
-        for (let x=0; x < shapes[nbr][y].length; x++) {
-            grid[ord+y][abs+x] = shapes[nbr][y][x]
+function clearPiece(nbr, abs, ord, pos) {
+    for (let y=0; y < shapes[nbr][pos].length; y++) {
+        for (let x=0; x < shapes[nbr][pos][y].length; x++) {
+            grid[ord+y][abs+x] = 0;
         }
     }
     renderGrid();
@@ -392,23 +563,26 @@ document.getElementById('play').addEventListener('click', function() {
 
 // devbut du jeu quand on appuis sur le bouton play
 document.getElementById('restart').addEventListener('click', function() {
-    hideStartMenu();
+    hideEndMenu();
+    reset();
     loop();
 })
 
+renderPiece(piece, abscisse, ordonnee, position);
+
 
 function loop() {
-    setInterval(function () {
-        let nbr1 = Math.floor(Math.random() * 7);
-        let nbr2 = Math.floor(Math.random() * 7);
-        renderGridNext(nbr1, nbr2);
-    }, 1000);
+    // const truc =  setInterval(function () {
+    //     let nbr1 = Math.floor(Math.random() * 7);
+    //     let nbr2 = Math.floor(Math.random() * 7);
+    //     renderGridNext(nbr1, nbr2);
+    // }, 1000);
     
     
-    setInterval(function () {
-        let nbr = Math.floor(Math.random() * 7);
-        renderPiece(nbr, abscisse, ordonnee, position);
-    }, 1000);
+    // setInterval(function () {
+    //     let nbr = Math.floor(Math.random() * 7);
+    //     renderPiece(nbr, abscisse, ordonnee, position);
+    // }, 1000);
 }
 
 function main() {
