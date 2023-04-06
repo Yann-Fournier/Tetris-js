@@ -316,7 +316,7 @@ let compteurs = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
 let score = 0;
 let hightScore = 0;
 
-let piece = 2;
+let piece = 0;
 let abscisse = 3;
 let ordonnee = 0;
 let position = 0;
@@ -439,20 +439,45 @@ function arrowRight() {
 // }
 
 function keyD() {
+    let vrai = true;
+    let posi =  position;
+
     clearPiece(piece, abscisse, ordonnee, position);
+
     if (position === 3) {
         position = 0;
     } else {
         position += 1;
     }
+
+    if (abscisse > 10 - shapes[piece][position][0].length) {
+        vrai = false
+    }
+
+    if (!vrai) {
+        position = posi
+    }
+    
     renderPiece(piece, abscisse, ordonnee, position);
 }
 function keyA() {
+    let vrai = true;
+    let posi =  position;
+
     clearPiece(piece, abscisse, ordonnee, position);
+    
     if (position === 0) {
         position = 3;
     } else {
         position -= 1;
+    }
+
+    if (abscisse > 10 - shapes[piece][position][0].length) {
+        vrai = false
+    }
+
+    if (!vrai) {
+        position = posi
     }
 
     renderPiece(piece, abscisse, ordonnee, position);
