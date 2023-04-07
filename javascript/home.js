@@ -321,8 +321,10 @@ let abscisse = 3;
 let ordonnee = 0;
 let position = 0;
 
-// 
-var gameOn = true
+//
+var gameOn = true;
+var newPiece = true
+var cpt = 0
 
 
 // Affichage ---------------------------------------------------------------------------------------------
@@ -525,7 +527,9 @@ function collision() {
 function renderPiece(nbr, abs, ord, pos) {
     for (let y=0; y < shapes[nbr][pos].length; y++) {
         for (let x=0; x < shapes[nbr][pos][y].length; x++) {
-            grid[ord+y][abs+x] = shapes[nbr][pos][y][x];
+            if (grid[ord+y][abs+x] === 0) {
+                grid[ord+y][abs+x] = shapes[nbr][pos][y][x];
+            } 
         }
     }
     renderGrid();
@@ -534,7 +538,9 @@ function renderPiece(nbr, abs, ord, pos) {
 function clearPiece(nbr, abs, ord, pos) {
     for (let y=0; y < shapes[nbr][pos].length; y++) {
         for (let x=0; x < shapes[nbr][pos][y].length; x++) {
-            grid[ord+y][abs+x] = 0;
+            if (grid[ord+y][abs+x] === nbr+1) {
+                grid[ord+y][abs+x] = 0;
+            } 
         }
     }
     renderGrid();
@@ -583,20 +589,58 @@ function showEndMenu () {
 // début du jeu quand on appuis sur le bouton play
 document.getElementById('play').addEventListener('click', function() {
     hideStartMenu();
-    loop();
+    Jeu();
 })
 
 // devbut du jeu quand on appuis sur le bouton play
 document.getElementById('restart').addEventListener('click', function() {
     hideEndMenu();
     reset();
-    loop();
+    Jeu();
 })
 
-renderPiece(piece, abscisse, ordonnee, position);
 
 
-function loop() {
+function interval() {
+
+}
+
+function Jeu() {
+    piece = Math.floor(Math.random() * 7);
+    renderPiece(piece, abscisse, ordonnee, position);
+
+    let nbr1 = Math.floor(Math.random() * 7);
+    let nbr2 = Math.floor(Math.random() * 7);
+    renderGridNext(nbr1, nbr2);
+    
+
+    var gravity = setInterval(function gravity() {
+        if (ordonnee < 19 - shapes[piece][position].length) {
+            clearPiece(piece, abscisse, ordonnee, position);
+            ordonnee+=1;
+            renderPiece(piece, abscisse, ordonnee, position);
+        } else {
+            newPiece= false;
+        }
+
+        if (!newPiece) {
+            piece = nbr1;
+            nbr1 = nbr2;
+            nbr2 = Math.floor(Math.random() * 7); 
+            renderGridNext(nbr1, nbr2);
+            abscisse = 3;
+            ordonnee = 0;
+            position = 0;
+            newPiece = true
+            renderPiece(piece, abscisse, ordonnee, position);
+        }
+        
+    },500);
+
+    
+    
+    
+    
     // const truc =  setInterval(function () {
     //     let nbr1 = Math.floor(Math.random() * 7);
     //     let nbr2 = Math.floor(Math.random() * 7);
@@ -606,7 +650,7 @@ function loop() {
     
     // setInterval(function () {
     //     let nbr = Math.floor(Math.random() * 7);
-    //     renderPiece(nbr, abscisse, ordonnee, position);
+    //     renderPiece(piece, abscisse, ordonnee, position);
     // }, 1000);
 }
 
