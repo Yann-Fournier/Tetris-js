@@ -314,7 +314,7 @@ let compteurs = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
 
 // Score du joueur
 let score = 0;
-let hightScore = 0;
+let highScore = 0;
 
 let piece = 0;
 let abscisse = 3;
@@ -323,7 +323,7 @@ let position = 0;
 
 //
 var gameOn = true;
-var newPiece = true
+var newPiece = false
 var cpt = 0
 
 
@@ -507,22 +507,7 @@ function reset() {
 // function down() {
 // }
 
-function isTournable() {
-}
 
-function collision() {
-    // if () {
-    //     return
-    // } 
-
-    for (let y=0; y < shapes[nbr].length; y++) {
-        for (let x=0; x < shapes[nbr][y].length; x++) {
-            if (grid[ord+y][abs+x] !== 0) {
-                return;
-            }
-        }
-    }
-}
 
 function renderPiece(nbr, abs, ord, pos) {
     for (let y=0; y < shapes[nbr][pos].length; y++) {
@@ -546,39 +531,29 @@ function clearPiece(nbr, abs, ord, pos) {
     renderGrid();
 }
 
-
-
-function writeNext(i)
-{
-    if(i == 5)
-        return;
-
-    setTimeout(function()
-    {
-        writeNext(i + 1);
-        console.log(i);
-
-    }, 1000);
+function collision() {
+        //Colision du dessous
+        // for (let x=0; x < shapes[piece][position][0].length; x++) {
+        //     if ((grid[ordonnee+shapes[piece][position].length][abscisse+x] !== 0) && (ordonnee+shapes[piece][position].length !== 20)){
+        //         newPiece = true;
+        //     } 
+        // }
 }
+
 
 
 
 function hideEndMenu () {
     document.getElementById('end-menu').style.display = 'none';
-    //gameContainer.classList.remove('backdrop-blur');
 }
 
 function hideStartMenu () {
     document.getElementById('start-menu').style.display = 'none';
-    //gameContainer.classList.remove('backdrop-blur');
 }
 
 function showEndMenu () {
     document.getElementById('end-menu').style.display = 'block';
-    //gameContainer.classList.add('backdrop-blur');
     document.getElementById('end-score').innerHTML = score;
-    // This way we update always our highscore at the end of our game
-    // if we have a higher high score than the previous
     if (highScore < score) {
         highScore = score;
     }
@@ -599,12 +574,6 @@ document.getElementById('restart').addEventListener('click', function() {
     Jeu();
 })
 
-
-
-function interval() {
-
-}
-
 function Jeu() {
     piece = Math.floor(Math.random() * 7);
     renderPiece(piece, abscisse, ordonnee, position);
@@ -614,16 +583,16 @@ function Jeu() {
     renderGridNext(nbr1, nbr2);
     
 
-    var gravity = setInterval(function gravity() {
+    var gravity = setInterval(function gravit() {
         if (ordonnee < 19 - shapes[piece][position].length) {
             clearPiece(piece, abscisse, ordonnee, position);
             ordonnee+=1;
             renderPiece(piece, abscisse, ordonnee, position);
         } else {
-            newPiece= false;
+            newPiece= true;
         }
 
-        if (!newPiece) {
+        if (newPiece) {
             piece = nbr1;
             nbr1 = nbr2;
             nbr2 = Math.floor(Math.random() * 7); 
@@ -631,27 +600,23 @@ function Jeu() {
             abscisse = 3;
             ordonnee = 0;
             position = 0;
-            newPiece = true
+            newPiece = false
             renderPiece(piece, abscisse, ordonnee, position);
         }
-        
-    },500);
 
+        // cpt++;
+        // if (cpt === 20) {
+        //     gameOn = false
+        // }
+        if(!gameOn) {
+            gameOn = true
+            cpt = 0
+            clearInterval(gravity);
+            showEndMenu();
+        }
     
-    
-    
-    
-    // const truc =  setInterval(function () {
-    //     let nbr1 = Math.floor(Math.random() * 7);
-    //     let nbr2 = Math.floor(Math.random() * 7);
-    //     renderGridNext(nbr1, nbr2);
-    // }, 1000);
-    
-    
-    // setInterval(function () {
-    //     let nbr = Math.floor(Math.random() * 7);
-    //     renderPiece(piece, abscisse, ordonnee, position);
-    // }, 1000);
+
+    },500);
 }
 
 function main() {
