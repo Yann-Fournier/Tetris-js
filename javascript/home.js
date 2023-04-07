@@ -171,137 +171,109 @@ let shapes = [
     [ // 4 aligné
         [
             [1,1,1,1]
-        ],
-        [
+        ],[
             [1],
             [1],
             [1],
             [1]
-        ],
-        [
+        ],[
             [1,1,1,1]
-        ],  
-        [
+        ],[
             [1],
             [1],
             [1],
             [1],
         ]
-    ],
-    [ // L vers la droite
+    ],[ // L vers la droite
         [
             [0,0,2],
             [2,2,2]
-        ],
-        [
+        ],[
             [2,0],
             [2,0],
             [2,2],
-        ],
-        [
+        ],[
             [2,2,2],
             [2,0,0],
-        ],
-        [
+        ],[
             [2,2],
             [0,2],
             [0,2],
         ]
-    ],
-    [ // L vers la gauche 
+    ],[ // L vers la gauche 
         [
             [3,0,0,],
             [3,3,3,]
-        ],
-        [
+        ],[
             [3,3],
             [3,0],
             [3,0]
-        ],
-        [
+        ],[
             [3,3,3],
             [0,0,3]
-        ],
-        [
+        ],[
             [0,3],
             [0,3],
             [3,3]
-        ]
-        
-    ],
-    [ // carré 
+        ] 
+    ],[ // carré 
         [
             [4,4],
             [4,4]
-        ],
-        [
+        ],[
             [4,4],
             [4,4]
-        ],
-        [
+        ],[
             [4,4],
             [4,4]
-        ],
-        [
+        ],[
             [4,4],
             [4,4]
         ]
-    ],
-    [ // T 
+    ],[ // T 
         [
             [0,5,0],
             [5,5,5],
-        ],
-        [
+        ],[
             [5,0],
             [5,5],
             [5,0]
-        ],
-        [
+        ],[
             [5,5,5],
             [0,5,0]
-        ],
-        [
+        ],[
             [0,5],
             [5,5],
             [0,5]
         ],
-    ],
-    [ // esca Mont 
+    ],[ // esca Mont 
         [
             [6,6,0],
             [0,6,6]
-        ],
-        [
+        ],[
+            [0,6],
+            [6,6],
+            [6,0]
+        ],[
+            [6,6,0],
+            [0,6,6]
+        ],[
             [0,6],
             [6,6],
             [6,0]
         ],
-        [
-            [6,6,0],
-            [0,6,6]
-        ],
-        [
-            [0,6],
-            [6,6],
-            [6,0]
-        ],
-    ],
-    [ // esca Decs
+    ],[ // esca Decs
         [
             [0,7,7],
             [7,7,0]
-        ],
-        [
+        ],[
             [7,0],
             [7,7],
             [0,7]
-        ],
-        [
+        ],[
             [0,7,7],
             [7,7,0]
-        ],
-        [
+        ],[
             [7,0],
             [7,7],
             [0,7]
@@ -370,6 +342,8 @@ function renderGrid() {
     }
 }
 
+renderGrid();
+
 function renderGridNext(nbr1, nbr2) {
     nextctx.clearRect(0, 0, next.width, next.height);
     nextgrid = nextGrid();
@@ -398,11 +372,6 @@ function renderGridNext(nbr1, nbr2) {
         }
     }
 }
-
-renderGrid();
-//renderGridNext(3, 6); // nbr de 1 à 7
-
-
 
 // Fonctionnement ------------------------------------------------------------------------------------------------------
 //Event listener ************************************************************************************
@@ -437,9 +406,6 @@ function arrowRight() {
     renderPiece(piece, abscisse, ordonnee, position);
 }
 
-// function space() {
-// }
-
 function keyD() {
     let vrai = true;
     let posi =  position;
@@ -462,6 +428,7 @@ function keyD() {
     
     renderPiece(piece, abscisse, ordonnee, position);
 }
+
 function keyA() {
     let vrai = true;
     let posi =  position;
@@ -488,26 +455,15 @@ function keyA() {
 function reset() {
     grid = Grid();
     nextgrid = nextGrid();
-
-    // conpte le nombre de bloque par ligne
     compteurs = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
-
-    // Score du joueur
     score = 0;
     hightScore = 0;
-
     piece = 0;
     abscisse = 3;
     ordonnee = 0;
     position = 0;
-
-    // 
     gameOn = true
 }
-// function down() {
-// }
-
-
 
 function renderPiece(nbr, abs, ord, pos) {
     for (let y=0; y < shapes[nbr][pos].length; y++) {
@@ -542,13 +498,12 @@ function collision() {
 
 
 
+function hideStartMenu () {
+    document.getElementById('start-menu').style.display = 'none';
+}
 
 function hideEndMenu () {
     document.getElementById('end-menu').style.display = 'none';
-}
-
-function hideStartMenu () {
-    document.getElementById('start-menu').style.display = 'none';
 }
 
 function showEndMenu () {
@@ -559,7 +514,6 @@ function showEndMenu () {
     }
     document.getElementById('best-score').innerHTML = highScore;
 }
-
 
 // début du jeu quand on appuis sur le bouton play
 document.getElementById('play').addEventListener('click', function() {
@@ -618,8 +572,3 @@ function Jeu() {
 
     },500);
 }
-
-function main() {
-}
-
-//main();
