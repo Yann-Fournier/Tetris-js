@@ -567,20 +567,20 @@ function compter(nbr, abs, ord, pos) {
 }
 
 function replaceRows() {
-    // A changer &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
-    let y = 0;
-    let up = -1;
+    let ligneGrid = [0,0,0,0,0,0,0,0,0,0];
+    let cpt = 0;
     for (let i = 0; i <compteurs.length; i++) {
         if (compteurs[i] === 10) {
-            up+= 1;
-            y = i;
+            let lenGrid = grid.splice(i, 1);
+            let lenCompteurs = compteurs.splice(i,1);
+            lenGrid = grid.unshift(ligneGrid);
+            lenCompteurs = compteurs.unshift(0);
+            cpt += 1;
         }
     }
-    if (y !== 0) {
-        console.log("------------");
-        console.log(y);
-        console.log(up);
-    }
+    score = score + (100 * cpt);
+    scoreAff.innerHTML = score;
+    renderGrid();
 }
 
 function hideStartMenu () {
@@ -646,10 +646,6 @@ function Jeu() {
                     clearInterval(gravity);
                     showEndMenu();
                 } else {
-                    // Remplacer les lignes 
-                    compter(piece, abscisse, ordonnee, position);
-                    replaceRows();
-
                     // Ajout score piece ect...
                     score += 10;
                     scoreAff.innerHTML = score;
@@ -661,10 +657,6 @@ function Jeu() {
                 renderPiece(piece, abscisse, ordonnee, position);
             }
         } else {
-            // Remplacer les lignes 
-            compter(piece, abscisse, ordonnee, position);
-            replaceRows();
-
             // Ajout score piece ect...
             score += 10;
             scoreAff.innerHTML = score;
@@ -673,6 +665,9 @@ function Jeu() {
 
 
         if (newPiece) {
+            // Remplacer les lignes 
+            compter(piece, abscisse, ordonnee, position);
+            replaceRows();
             piece = nbr1;
             nbr1 = nbr2;
             nbr2 = Math.floor(Math.random() * 7); 
@@ -683,5 +678,5 @@ function Jeu() {
             newPiece = false
             renderPiece(piece, abscisse, ordonnee, position);
         }
-    },500);
+    },300);
 }

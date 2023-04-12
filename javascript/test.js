@@ -1,15 +1,15 @@
-function writeNext(i)
-{
-    if(i == 5)
-        return;
+let tab = [0,1,2,3,4,5,6,7,8,9];
+//let cpt = 0;
 
-    setTimeout(function()
-    {
-        writeNext(i + 1);
-        console.log(i);
+console.log(tab);
 
-    }, 2000);
+for (let i = 0; i < tab.length; i++) {
+    if (tab[i]%2 === 0) {
+        tab = tab.splice(i, 1);
+        tab = tab.unshift(-1);
+        //cpt+=1;
+    }
 }
 
-writeNext(1);
+console.log(tab)
 
