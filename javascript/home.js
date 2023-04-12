@@ -6,7 +6,6 @@ title.appendChild(titre)
 titre.width = 380;
 titre.height = 85;
 
-
 // T de Tetris
 ti.fillStyle="#3A55FA"; // Bleu foncé
 ti.fillRect(0, 0, 15, 15);// 15+1
@@ -110,7 +109,6 @@ ti.fillRect(350, 64, 15, 15);
 
 
 // Jeu *********************************************************************************************
-
 // Variables ---------------------------------------------------------------------------------------------
 function Grid() {
     let grid = [
@@ -148,25 +146,22 @@ function nextGrid() {
     return nextgrid
 }
 
-let grid = Grid();
-let nextgrid = nextGrid();
+let grid = Grid(); // grille du jeu
+let nextgrid = nextGrid(); // grille des pièces suivantes
 
-// Est)ce qu'on peut la tourner (colision)
-let tournable = [true, true, true, true, true, true, true];
-
-// Différentes couleurs
+// tableau des différentes couleurs utilisées
 let colors = [
-    "#565656",
-    "#3AFEF4", // BC
-    "#FAB33A", // OR
-    "#3A55FA", // BF
-    "#EEFA3A", // JAU
-    "#DB3AFA", // VIO
-    "#FA5C3A", // ROU
-    "#59FA3A" // VER
+    "#565656", // Gris
+    "#3AFEF4", // Bleu Clair
+    "#FAB33A", // Orange
+    "#3A55FA", // Bleu Foncé
+    "#EEFA3A", // Jaune
+    "#DB3AFA", // Violet
+    "#FA5C3A", // Rouge
+    "#59FA3A" // Vert
 ];
 
-// Forme de départ
+// Tableau avec toutes les pièces et leurs positions
 let shapes = [
     [ // 4 aligné
         [
@@ -186,30 +181,30 @@ let shapes = [
         ]
     ],[ // L vers la droite
         [
-            [0,0,2], // Colide Left &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+            [0,0,2], // Exeption collision gauche
             [2,2,2]
         ],[
-            [2,0],
+            [2,0], 
             [2,0],
             [2,2]  
         ],[
-            [2,2,2], // Colide  Right &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+            [2,2,2], // Exeption collision droit
             [2,0,0]
         ],[
-            [2,2], 
+            [2,2], // Exeption collision bas
             [0,2],
             [0,2]
         ]
     ],[ // L vers la gauche 
         [
-            [3,0,0], // Colide Right &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+            [3,0,0], // Exeption collision droit
             [3,3,3]
         ],[
-            [3,3], 
+            [3,3], // Exeption collision bas
             [3,0],
             [3,0]
         ],[
-            [3,3,3], // Colide Left&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+            [3,3,3], // Exeption collision gauche
             [0,0,3] 
         ],[
             [0,3], 
@@ -281,23 +276,14 @@ let shapes = [
     ],
 ];
 
-// conpte le nombre de bloque par ligne
-let compteurs = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
-
-// Score du joueur
-let score = 0;
-let highScore = 0;
-
-let piece = 0;
-let abscisse = 3;
-let ordonnee = 0;
-let position = 0;
-
-//
-var gameOn = true;
-var newPiece = false
-var cpt = 0
-
+let compteurs = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]; // conpte le nombre de bloque par ligne
+let score = 0; // Score du joueur
+let highScore = 0; // hight Score du moment
+let piece = 0; // 
+let abscisse = 3; // position horizontale de la pièce
+let ordonnee = 0; // position verticale de la pièce
+let position = 0; // orientation de la pièce
+var newPiece = false // pour indiquer au programme de générer une nouvelle pièce
 
 // Affichage ---------------------------------------------------------------------------------------------
 var grille = document.getElementById("gille");
@@ -323,12 +309,10 @@ next.style = "margin-left:20px;"
 next.width = 84;
 next.height = 105;
 
-
 info.appendChild(scoreText);
 info.appendChild(scoreAff);
 info.appendChild(nextText);
 info.appendChild(next);
-
 
 function renderGrid() {
     ctx.clearRect(0, 0, tetris.width, tetris.height);
@@ -371,6 +355,62 @@ function renderGridNext(nbr1, nbr2) {
             }
         }
     }
+}
+
+function renderPiece(nbr, abs, ord, pos) {
+    for (let y=0; y < shapes[nbr][pos].length; y++) {
+        for (let x=0; x < shapes[nbr][pos][y].length; x++) {
+            if (grid[ord+y][abs+x] === 0) {
+                grid[ord+y][abs+x] = shapes[nbr][pos][y][x];
+            } 
+        }
+    }
+    renderGrid();
+}
+
+function clearPiece(nbr, abs, ord, pos) {
+    for (let y=0; y < shapes[nbr][pos].length; y++) {
+        for (let x=0; x < shapes[nbr][pos][y].length; x++) {
+            if (shapes[nbr][pos][y][x] !==0) {
+                grid[ord+y][abs+x] = 0;
+            } 
+        }
+    }
+    renderGrid();
+}
+
+function replaceRows() {
+    let ligneGrid = [0,0,0,0,0,0,0,0,0,0];
+    let cpt = 0;
+    for (let i = 0; i <compteurs.length; i++) {
+        if (compteurs[i] === 10) {
+            let lenGrid = grid.splice(i, 1);
+            let lenCompteurs = compteurs.splice(i,1);
+            lenGrid = grid.unshift(ligneGrid);
+            lenCompteurs = compteurs.unshift(0);
+            cpt += 1;
+        }
+    }
+    score = score + (100 * cpt);
+    scoreAff.innerHTML = score;
+    renderGrid();
+}
+
+function hideStartMenu () {
+    document.getElementById('start-menu').style.display = 'none';
+}
+
+function hideEndMenu () {
+    document.getElementById('end-menu').style.display = 'none';
+}
+
+function showEndMenu () {
+    document.getElementById('end-menu').style.display = 'block';
+    document.getElementById('end-score').innerHTML = score;
+    if (highScore < score) {
+        highScore = score;
+    }
+    document.getElementById('best-score').innerHTML = highScore;
 }
 
 // Fonctionnement ------------------------------------------------------------------------------------------------------
@@ -429,7 +469,6 @@ function checkLeft(nbr, pos) {
 function checkRight(nbr, pos) {
     let hauteur = shapes[nbr][pos].length-1;
     let largeur = shapes[nbr][pos][0].length-1;
-
     if (nbr === 1 && pos === 2) {
         if(grid[ordonnee][abscisse+largeur+1] !== 0 || grid[ordonnee+1][abscisse+largeur-1] !== 0) {
             return true
@@ -454,8 +493,7 @@ function checkRight(nbr, pos) {
     return false;
 }
 
-
-function arrowLeft() {
+function moveLeft() {
     clearPiece(piece, abscisse, ordonnee, position);
     if (abscisse>0) {
         if (!checkLeft(piece, position)) {
@@ -464,7 +502,8 @@ function arrowLeft() {
     }
     renderPiece(piece, abscisse, ordonnee, position);
 }
-function arrowRight() {
+
+function moveRight() {
     clearPiece(piece, abscisse, ordonnee, position);
     nbr = 10-shapes[piece][position][0].length;
     if (abscisse<nbr) {
@@ -475,49 +514,39 @@ function arrowRight() {
     renderPiece(piece, abscisse, ordonnee, position);
 }
 
-function keyD() {
+function turnRight() {
     let vrai = true;
     let posi =  position;
-
     clearPiece(piece, abscisse, ordonnee, position);
-
     if (position === 3) {
         position = 0;
     } else {
         position += 1;
     }
-
     if (abscisse > 10 - shapes[piece][position][0].length) {
         vrai = false
     }
-
     if (!vrai) {
         position = posi
     }
-    
     renderPiece(piece, abscisse, ordonnee, position);
 }
 
-function keyA() {
+function turnLeft() {
     let vrai = true;
     let posi =  position;
-
     clearPiece(piece, abscisse, ordonnee, position);
-    
     if (position === 0) {
         position = 3;
     } else {
         position -= 1;
     }
-
     if (abscisse > 10 - shapes[piece][position][0].length) {
         vrai = false
     }
-
     if (!vrai) {
         position = posi
     }
-
     renderPiece(piece, abscisse, ordonnee, position);
 }
 
@@ -534,28 +563,6 @@ function reset() {
     gameOn = true;
 }
 
-function renderPiece(nbr, abs, ord, pos) {
-    for (let y=0; y < shapes[nbr][pos].length; y++) {
-        for (let x=0; x < shapes[nbr][pos][y].length; x++) {
-            if (grid[ord+y][abs+x] === 0) {
-                grid[ord+y][abs+x] = shapes[nbr][pos][y][x];
-            } 
-        }
-    }
-    renderGrid();
-}
-
-function clearPiece(nbr, abs, ord, pos) {
-    for (let y=0; y < shapes[nbr][pos].length; y++) {
-        for (let x=0; x < shapes[nbr][pos][y].length; x++) {
-            if (shapes[nbr][pos][y][x] !==0) {
-                grid[ord+y][abs+x] = 0;
-            } 
-        }
-    }
-    renderGrid();
-}
-
 function compter(nbr, abs, ord, pos) {
     for (let y = 0; y < shapes[nbr][pos].length; y++) {
         for (let x = 0; x <shapes[nbr][pos][y].length; x++) {
@@ -564,40 +571,6 @@ function compter(nbr, abs, ord, pos) {
             }
         }
     }
-}
-
-function replaceRows() {
-    let ligneGrid = [0,0,0,0,0,0,0,0,0,0];
-    let cpt = 0;
-    for (let i = 0; i <compteurs.length; i++) {
-        if (compteurs[i] === 10) {
-            let lenGrid = grid.splice(i, 1);
-            let lenCompteurs = compteurs.splice(i,1);
-            lenGrid = grid.unshift(ligneGrid);
-            lenCompteurs = compteurs.unshift(0);
-            cpt += 1;
-        }
-    }
-    score = score + (100 * cpt);
-    scoreAff.innerHTML = score;
-    renderGrid();
-}
-
-function hideStartMenu () {
-    document.getElementById('start-menu').style.display = 'none';
-}
-
-function hideEndMenu () {
-    document.getElementById('end-menu').style.display = 'none';
-}
-
-function showEndMenu () {
-    document.getElementById('end-menu').style.display = 'block';
-    document.getElementById('end-score').innerHTML = score;
-    if (highScore < score) {
-        highScore = score;
-    }
-    document.getElementById('best-score').innerHTML = highScore;
 }
 
 // début du jeu quand on appuis sur le bouton play
@@ -615,17 +588,14 @@ document.getElementById('restart').addEventListener('click', function() {
 
 //Event listener ************************************************************************************
 document.addEventListener("keydown", (event)  => {
-    console.log(event.code);
     if (event.code === "ArrowLeft"){
-       arrowLeft();
+       moveLeft();
     } else if (event.code == "ArrowRight"){
-        arrowRight();
-    // } else if (event.code == "Space") {
-    //     space();
+        moveRight();
     } else if (event.code == "KeyA") {
-        keyA();
+        turnLeft();
     } else if (event.code == "KeyD") {
-        keyD();
+        turnRight();
     }
 });
 
@@ -678,5 +648,5 @@ function Jeu() {
             newPiece = false
             renderPiece(piece, abscisse, ordonnee, position);
         }
-    },300);
+    },500);
 }
