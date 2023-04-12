@@ -113,40 +113,18 @@ ti.fillRect(350, 64, 15, 15);
 
 // Variables ---------------------------------------------------------------------------------------------
 function Grid() {
-    /*let grid = [
-        [0,0,0,0,0,0,0,0,0,0],
-        [0,0,0,0,0,0,0,0,0,0],
-        [0,0,0,0,0,0,0,0,0,0],
-        [0,0,0,0,0,0,0,0,0,0],
-        [0,0,0,0,0,0,0,0,0,0],
-        [0,0,0,0,0,0,0,0,0,0],
-        [0,0,0,0,0,0,0,0,0,0],
-        [0,0,0,0,0,0,0,0,0,0],
-        [0,0,0,0,0,0,0,0,0,0],
-        [0,0,0,0,0,0,0,0,0,0],
-        [0,0,0,0,0,0,0,0,0,0],
-        [0,0,0,0,0,0,0,0,0,0],
-        [0,0,0,0,0,0,0,0,0,0],
-        [0,0,0,0,0,0,0,0,0,0],
-        [0,0,0,0,0,0,0,0,0,0],
-        [0,0,0,0,0,0,0,0,0,0],
-        [0,0,0,0,0,0,0,0,0,0],
-        [0,0,0,0,0,0,0,0,0,0],
-        [0,0,0,0,0,0,0,0,0,0]
-    ];*/
-
     let grid = [
-        [0,0,0,0,0,0,0,0,1,1],
-        [0,0,0,0,0,0,0,0,1,1],
-        [0,0,0,0,0,0,0,0,1,1],
-        [0,0,0,0,0,0,0,0,1,1],
-        [0,0,0,0,0,0,0,0,1,1],
-        [0,0,0,0,0,0,0,0,1,1],
-        [0,0,0,0,0,0,0,0,1,1],
-        [0,0,0,0,0,0,0,0,1,1],
-        [0,0,0,0,0,0,0,0,1,1],
-        [0,0,0,0,0,0,0,0,1,1],
-        [0,0,0,0,0,0,0,0,1,1],
+        [0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0],
         [0,0,0,0,0,0,0,0,0,0],
         [0,0,0,0,0,0,0,0,0,0],
         [0,0,0,0,0,0,0,0,0,0],
@@ -156,7 +134,6 @@ function Grid() {
         [0,0,0,0,0,0,0,0,0,0],
         [0,0,0,0,0,0,0,0,0,0]
     ];
-    
     return grid;
 }
 
@@ -209,34 +186,34 @@ let shapes = [
         ]
     ],[ // L vers la droite
         [
-            [0,0,2],
+            [0,0,2], // Colide Left &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
             [2,2,2]
         ],[
             [2,0],
             [2,0],
-            [2,2]
+            [2,2]  
         ],[
-            [2,2,2],
+            [2,2,2], // Colide  Right &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
             [2,0,0]
         ],[
-            [2,2], // Colide &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+            [2,2], 
             [0,2],
             [0,2]
         ]
     ],[ // L vers la gauche 
         [
-            [3,0,0],
+            [3,0,0], // Colide Right &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
             [3,3,3]
         ],[
-            [3,3], // Colide &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+            [3,3], 
             [3,0],
             [3,0]
         ],[
-            [3,3,3],
-            [0,0,3]
+            [3,3,3], // Colide Left&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+            [0,0,3] 
         ],[
-            [0,3],
-            [0,3],
+            [0,3], 
+            [0,3], 
             [3,3]
         ] 
     ],[ // carré 
@@ -397,26 +374,93 @@ function renderGridNext(nbr1, nbr2) {
 }
 
 // Fonctionnement ------------------------------------------------------------------------------------------------------
-//Event listener ************************************************************************************
-document.addEventListener("keydown", (event)  => {
-    console.log(event.code);
-    if (event.code === "ArrowLeft"){
-       arrowLeft();
-    } else if (event.code == "ArrowRight"){
-        arrowRight();
-    // } else if (event.code == "Space") {
-    //     space();
-    } else if (event.code == "KeyA") {
-        keyA();
-    } else if (event.code == "KeyD") {
-        keyD();
+function checkBottom(nbr, pos) {
+    //Colision du dessous
+    let hauteur = shapes[nbr][pos].length-1;
+    if(nbr === 1 && pos === 3) {
+        if ((grid[ordonnee + hauteur + 1][abscisse + 1] !== 0) || (grid[ordonnee + hauteur - 1][abscisse] !== 0)) {
+            return true;
+        }
+    } else if (nbr === 2 && pos === 1) {
+        if ((grid[ordonnee + hauteur + 1][abscisse] !== 0) || (grid[ordonnee + hauteur - 1][abscisse + 1] !== 0)) {
+            return true;
+        }
+    } else {
+        for (let x=0; x<shapes[nbr][pos][hauteur].length; x++) {
+            if (shapes[nbr][pos][hauteur][x] === nbr+1) {
+                if (grid[ordonnee + hauteur + 1][abscisse + x] !== 0) {
+                    return true;
+                }
+            } else if (shapes[nbr][pos][hauteur][x] === 0) {
+                if (grid[ordonnee + hauteur][abscisse + x] !== 0) {
+                    return true;
+                }
+            } 
+        }
     }
-});
+    return false;
+}
+
+function checkLeft(nbr, pos) {
+    if (nbr === 1 && pos === 0) {
+        if(grid[ordonnee][abscisse+1] !== 0 || grid[ordonnee+1][abscisse-1] !== 0) {
+            return true
+        }
+    } else if (nbr === 2 && pos === 2) {
+        if(grid[ordonnee][abscisse-1] !== 0 || grid[ordonnee+1][abscisse+1] !== 0) {
+            return true
+        }
+    } else {
+        for (let y = 0; y<shapes[nbr][pos].length; y++) {
+            if (shapes[nbr][pos][y][0] === nbr+1) {
+                if (grid[ordonnee+y][abscisse-1] !==0) {
+                    return true;
+                }
+            } else if (shapes[nbr][pos][y][0] === 0) {
+                if (grid[ordonnee+y][abscisse] !==0) {
+                    return true;
+                } 
+            }
+        }
+    }
+    return false;
+}
+
+function checkRight(nbr, pos) {
+    let hauteur = shapes[nbr][pos].length-1;
+    let largeur = shapes[nbr][pos][0].length-1;
+
+    if (nbr === 1 && pos === 2) {
+        if(grid[ordonnee][abscisse+largeur+1] !== 0 || grid[ordonnee+1][abscisse+largeur-1] !== 0) {
+            return true
+        }
+    } else if (nbr === 2 && pos === 0) {
+        if(grid[ordonnee][abscisse + largeur-1] !== 0 || grid[ordonnee+1][abscisse+largeur+1] !== 0) {
+            return true
+        }
+    } else {
+        for (let y = 0; y<shapes[nbr][pos].length; y++) {
+            if (shapes[nbr][pos][y][largeur] === nbr+1) {
+                if (grid[ordonnee+y][abscisse + largeur +1] !==0) {
+                    return true;
+                }
+            } else if (shapes[nbr][pos][y][largeur] === 0) {
+                if (grid[ordonnee+y][abscisse + largeur] !==0) {
+                    return true;
+                } 
+            }
+        } 
+    }
+    return false;
+}
+
 
 function arrowLeft() {
     clearPiece(piece, abscisse, ordonnee, position);
     if (abscisse>0) {
-        abscisse -= 1;
+        if (!checkLeft(piece, position)) {
+            abscisse -= 1;
+        }
     }
     renderPiece(piece, abscisse, ordonnee, position);
 }
@@ -424,7 +468,9 @@ function arrowRight() {
     clearPiece(piece, abscisse, ordonnee, position);
     nbr = 10-shapes[piece][position][0].length;
     if (abscisse<nbr) {
-        abscisse += 1;
+        if (!checkRight(piece, position)) {
+            abscisse += 1;
+        }
     }
     renderPiece(piece, abscisse, ordonnee, position);
 }
@@ -510,35 +556,6 @@ function clearPiece(nbr, abs, ord, pos) {
     renderGrid();
 }
 
-function downCollision(nbr, pos) {
-    //Colision du dessous
-    let truc = shapes[nbr][pos].length-1;
-    if(nbr === 1 && pos === 3) {
-            if ((grid[ordonnee + truc + 1][abscisse + 1] !== 0) || (grid[ordonnee + truc - 1][abscisse] !== 0)) {
-                return true;
-            }
-        
-    } else if (nbr === 2 && pos === 1) {
-
-            if ((grid[ordonnee + truc + 1][abscisse] !== 0) || (grid[ordonnee + truc - 1][abscisse + 1] !== 0)) {
-                return true;
-            }
-    } else {
-        for (let x=0; x<shapes[nbr][pos][truc].length; x++) {
-            if (shapes[nbr][pos][truc][x] === nbr+1) {
-                if (grid[ordonnee + truc+1][abscisse + x] !== 0) {
-                    return true;
-                }
-            } else if (shapes[nbr][pos][truc][x] === 0) {
-                if (grid[ordonnee + truc][abscisse + x] !== 0) {
-                    return true;
-                }
-            } 
-        }
-    }
-    return false;
-}
-
 
 function replaceRows() {
 
@@ -575,6 +592,22 @@ document.getElementById('restart').addEventListener('click', function() {
     Jeu();
 })
 
+//Event listener ************************************************************************************
+document.addEventListener("keydown", (event)  => {
+    console.log(event.code);
+    if (event.code === "ArrowLeft"){
+       arrowLeft();
+    } else if (event.code == "ArrowRight"){
+        arrowRight();
+    // } else if (event.code == "Space") {
+    //     space();
+    } else if (event.code == "KeyA") {
+        keyA();
+    } else if (event.code == "KeyD") {
+        keyD();
+    }
+});
+
 function Jeu() {
     piece = Math.floor(Math.random() * 7);
     renderPiece(piece, abscisse, ordonnee, position);
@@ -587,7 +620,7 @@ function Jeu() {
     var gravity = setInterval(function gravit() {
         if (ordonnee < 19 - shapes[piece][position].length) {
             clearPiece(piece, abscisse, ordonnee, position);
-            if (downCollision(piece, position)) {
+            if (checkBottom(piece, position)) {
                 renderPiece(piece, abscisse, ordonnee, position);
                 newPiece = true;
             } else {
