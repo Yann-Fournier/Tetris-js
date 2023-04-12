@@ -189,25 +189,25 @@ let shapes = [
             [0,0,2],
             [2,2,2]
         ],[
-            [2,0],
-            [2,0],
+            [2],
+            [2],
             [2,2],
         ],[
             [2,2,2],
-            [2,0,0],
+            [2],
         ],[
-            [2,2],
+            [2,2], // Colide &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
             [0,2],
             [0,2],
         ]
     ],[ // L vers la gauche 
         [
-            [3,0,0,],
+            [3],
             [3,3,3,]
         ],[
-            [3,3],
-            [3,0],
-            [3,0]
+            [3,3], // Colide &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+            [3],
+            [3]
         ],[
             [3,3,3],
             [0,0,3]
@@ -232,15 +232,15 @@ let shapes = [
         ]
     ],[ // T 
         [
-            [0,5,0],
+            [0,5],
             [5,5,5],
         ],[
-            [5,0],
+            [5],
             [5,5],
-            [5,0]
+            [5]
         ],[
             [5,5,5],
-            [0,5,0]
+            [0,5]
         ],[
             [0,5],
             [5,5],
@@ -248,14 +248,14 @@ let shapes = [
         ],
     ],[ // esca Mont 
         [
-            [6,6,0],
+            [6,6],
             [0,6,6]
         ],[
             [0,6],
             [6,6],
             [6,0]
         ],[
-            [6,6,0],
+            [6,6],
             [0,6,6]
         ],[
             [0,6],
@@ -265,16 +265,16 @@ let shapes = [
     ],[ // esca Decs
         [
             [0,7,7],
-            [7,7,0]
+            [7,7]
         ],[
-            [7,0],
+            [7],
             [7,7],
             [0,7]
         ],[
             [0,7,7],
-            [7,7,0]
+            [7,7]
         ],[
-            [7,0],
+            [7],
             [7,7],
             [0,7]
         ] 
@@ -479,7 +479,7 @@ function renderPiece(nbr, abs, ord, pos) {
 function clearPiece(nbr, abs, ord, pos) {
     for (let y=0; y < shapes[nbr][pos].length; y++) {
         for (let x=0; x < shapes[nbr][pos][y].length; x++) {
-            if (grid[ord+y][abs+x] === nbr+1) {
+            if (shapes[nbr][pos][y][x] !==0) {
                 grid[ord+y][abs+x] = 0;
             } 
         }
@@ -487,15 +487,42 @@ function clearPiece(nbr, abs, ord, pos) {
     renderGrid();
 }
 
-function collision() {
-        //Colision du dessous
-        // for (let x=0; x < shapes[piece][position][0].length; x++) {
-        //     if ((grid[ordonnee+shapes[piece][position].length][abscisse+x] !== 0) && (ordonnee+shapes[piece][position].length !== 20)){
-        //         newPiece = true;
-        //     } 
-        // }
+function collision(nbr, pos) {
+    //Colision du dessous
+    let truc = shapes[nbr][pos].length-1;
+    if(nbr === 1) {
+        try {
+            if ((grid[ordonnee + truc + 1][abscisse + 1] !== 0) || (grid[ordonnee + truc - 1][abscisse] !== 0)) {
+                return true;
+            } 
+        } catch (Uncaught_TypeError) {}
+        
+    } else if (nbr === 2) {
+        try {
+            if ((grid[ordonnee + truc + 1][abscisse] !== 0) || (grid[ordonnee + truc - 1][abscisse + 1] !== 0)) {
+                return true;
+            }
+        } catch (Uncaught_TypeError) {}
+    } else {
+        for (let x=0; x<shapes[nbr][pos][truc].length; x++) {
+            if (shapes[nbr][pos][truc][x] === nbr+1) {
+                if (grid[ordonnee + truc+1][abscisse + x] !== 0) {
+                    return true;
+                }
+            } else if (shapes[nbr][pos][truc][x] === 0) {
+                if (grid[ordonnee + truc][abscisse + x] !== 0) {
+                    return true;
+                }
+            } 
+        }
+    }
+    return false;
 }
 
+
+function replaceRows() {
+
+}
 
 
 function hideStartMenu () {
@@ -540,13 +567,19 @@ function Jeu() {
     var gravity = setInterval(function gravit() {
         if (ordonnee < 19 - shapes[piece][position].length) {
             clearPiece(piece, abscisse, ordonnee, position);
-            ordonnee+=1;
-            renderPiece(piece, abscisse, ordonnee, position);
+            if (collision(piece, position)) {
+                renderPiece(piece, abscisse, ordonnee, position);
+                newPiece = true;
+            } else {
+                ordonnee+=1;
+                renderPiece(piece, abscisse, ordonnee, position);
+            }
         } else {
             newPiece= true;
         }
 
         if (newPiece) {
+            replaceRows();
             piece = nbr1;
             nbr1 = nbr2;
             nbr2 = Math.floor(Math.random() * 7); 
