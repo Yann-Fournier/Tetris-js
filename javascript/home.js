@@ -526,7 +526,7 @@ function reset() {
     nextgrid = nextGrid();
     compteurs = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
     score = 0;
-    hightScore = 0;
+    scoreAff.innerHTML = score;
     piece = 0;
     abscisse = 3;
     ordonnee = 0;
@@ -556,11 +556,32 @@ function clearPiece(nbr, abs, ord, pos) {
     renderGrid();
 }
 
-
-function replaceRows() {
-
+function compter(nbr, abs, ord, pos) {
+    for (let y = 0; y < shapes[nbr][pos].length; y++) {
+        for (let x = 0; x <shapes[nbr][pos][y].length; x++) {
+            if (shapes[nbr][pos][y][x] !== 0) {
+                compteurs[ordonnee+y] += 1;
+            }
+        }
+    }
 }
 
+function replaceRows() {
+    // A changer &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+    let y = 0;
+    let up = -1;
+    for (let i = 0; i <compteurs.length; i++) {
+        if (compteurs[i] === 10) {
+            up+= 1;
+            y = i;
+        }
+    }
+    if (y !== 0) {
+        console.log("------------");
+        console.log(y);
+        console.log(up);
+    }
+}
 
 function hideStartMenu () {
     document.getElementById('start-menu').style.display = 'none';
@@ -621,18 +642,37 @@ function Jeu() {
         if (ordonnee < 19 - shapes[piece][position].length) {
             clearPiece(piece, abscisse, ordonnee, position);
             if (checkBottom(piece, position)) {
-                renderPiece(piece, abscisse, ordonnee, position);
-                newPiece = true;
+                if (ordonnee === 0) {
+                    clearInterval(gravity);
+                    showEndMenu();
+                } else {
+                    // Remplacer les lignes 
+                    compter(piece, abscisse, ordonnee, position);
+                    replaceRows();
+
+                    // Ajout score piece ect...
+                    score += 10;
+                    scoreAff.innerHTML = score;
+                    renderPiece(piece, abscisse, ordonnee, position);
+                    newPiece = true;
+                }
             } else {
                 ordonnee+=1;
                 renderPiece(piece, abscisse, ordonnee, position);
             }
         } else {
+            // Remplacer les lignes 
+            compter(piece, abscisse, ordonnee, position);
+            replaceRows();
+
+            // Ajout score piece ect...
+            score += 10;
+            scoreAff.innerHTML = score;
             newPiece= true;
         }
 
+
         if (newPiece) {
-            replaceRows();
             piece = nbr1;
             nbr1 = nbr2;
             nbr2 = Math.floor(Math.random() * 7); 
@@ -643,17 +683,5 @@ function Jeu() {
             newPiece = false
             renderPiece(piece, abscisse, ordonnee, position);
         }
-
-        // cpt++;
-        // if (cpt === 20) {
-        //     gameOn = false
-        // }
-        if(!gameOn) {
-            cpt = 0
-            clearInterval(gravity);
-            showEndMenu();
-        }
-    
-
     },500);
 }
