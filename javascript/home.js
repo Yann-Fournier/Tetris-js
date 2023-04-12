@@ -113,7 +113,7 @@ ti.fillRect(350, 64, 15, 15);
 
 // Variables ---------------------------------------------------------------------------------------------
 function Grid() {
-    let grid = [
+    /*let grid = [
         [0,0,0,0,0,0,0,0,0,0],
         [0,0,0,0,0,0,0,0,0,0],
         [0,0,0,0,0,0,0,0,0,0],
@@ -133,7 +133,30 @@ function Grid() {
         [0,0,0,0,0,0,0,0,0,0],
         [0,0,0,0,0,0,0,0,0,0],
         [0,0,0,0,0,0,0,0,0,0]
+    ];*/
+
+    let grid = [
+        [0,0,0,0,0,0,0,0,1,1],
+        [0,0,0,0,0,0,0,0,1,1],
+        [0,0,0,0,0,0,0,0,1,1],
+        [0,0,0,0,0,0,0,0,1,1],
+        [0,0,0,0,0,0,0,0,1,1],
+        [0,0,0,0,0,0,0,0,1,1],
+        [0,0,0,0,0,0,0,0,1,1],
+        [0,0,0,0,0,0,0,0,1,1],
+        [0,0,0,0,0,0,0,0,1,1],
+        [0,0,0,0,0,0,0,0,1,1],
+        [0,0,0,0,0,0,0,0,1,1],
+        [0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0]
     ];
+    
     return grid;
 }
 
@@ -182,32 +205,32 @@ let shapes = [
             [1],
             [1],
             [1],
-            [1],
+            [1]
         ]
     ],[ // L vers la droite
         [
             [0,0,2],
             [2,2,2]
         ],[
-            [2],
-            [2],
-            [2,2],
+            [2,0],
+            [2,0],
+            [2,2]
         ],[
             [2,2,2],
-            [2],
+            [2,0,0]
         ],[
             [2,2], // Colide &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
             [0,2],
-            [0,2],
+            [0,2]
         ]
     ],[ // L vers la gauche 
         [
-            [3],
-            [3,3,3,]
+            [3,0,0],
+            [3,3,3]
         ],[
             [3,3], // Colide &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
-            [3],
-            [3]
+            [3,0],
+            [3,0]
         ],[
             [3,3,3],
             [0,0,3]
@@ -232,15 +255,15 @@ let shapes = [
         ]
     ],[ // T 
         [
-            [0,5],
-            [5,5,5],
+            [0,5,0],
+            [5,5,5]
         ],[
-            [5],
+            [5,0],
             [5,5],
-            [5]
+            [5,0]
         ],[
             [5,5,5],
-            [0,5]
+            [0,5,0]
         ],[
             [0,5],
             [5,5],
@@ -248,14 +271,14 @@ let shapes = [
         ],
     ],[ // esca Mont 
         [
-            [6,6],
+            [6,6,0],
             [0,6,6]
         ],[
             [0,6],
             [6,6],
             [6,0]
         ],[
-            [6,6],
+            [6,6,0],
             [0,6,6]
         ],[
             [0,6],
@@ -265,16 +288,16 @@ let shapes = [
     ],[ // esca Decs
         [
             [0,7,7],
-            [7,7]
+            [7,7,0]
         ],[
-            [7],
+            [7,0],
             [7,7],
             [0,7]
         ],[
             [0,7,7],
-            [7,7]
+            [7,7,0]
         ],[
-            [7],
+            [7,0],
             [7,7],
             [0,7]
         ] 
@@ -462,7 +485,7 @@ function reset() {
     abscisse = 3;
     ordonnee = 0;
     position = 0;
-    gameOn = true
+    gameOn = true;
 }
 
 function renderPiece(nbr, abs, ord, pos) {
@@ -487,22 +510,19 @@ function clearPiece(nbr, abs, ord, pos) {
     renderGrid();
 }
 
-function collision(nbr, pos) {
+function downCollision(nbr, pos) {
     //Colision du dessous
     let truc = shapes[nbr][pos].length-1;
-    if(nbr === 1) {
-        try {
+    if(nbr === 1 && pos === 3) {
             if ((grid[ordonnee + truc + 1][abscisse + 1] !== 0) || (grid[ordonnee + truc - 1][abscisse] !== 0)) {
                 return true;
-            } 
-        } catch (Uncaught_TypeError) {}
+            }
         
-    } else if (nbr === 2) {
-        try {
+    } else if (nbr === 2 && pos === 1) {
+
             if ((grid[ordonnee + truc + 1][abscisse] !== 0) || (grid[ordonnee + truc - 1][abscisse + 1] !== 0)) {
                 return true;
             }
-        } catch (Uncaught_TypeError) {}
     } else {
         for (let x=0; x<shapes[nbr][pos][truc].length; x++) {
             if (shapes[nbr][pos][truc][x] === nbr+1) {
@@ -567,7 +587,7 @@ function Jeu() {
     var gravity = setInterval(function gravit() {
         if (ordonnee < 19 - shapes[piece][position].length) {
             clearPiece(piece, abscisse, ordonnee, position);
-            if (collision(piece, position)) {
+            if (downCollision(piece, position)) {
                 renderPiece(piece, abscisse, ordonnee, position);
                 newPiece = true;
             } else {
@@ -596,7 +616,6 @@ function Jeu() {
         //     gameOn = false
         // }
         if(!gameOn) {
-            gameOn = true
             cpt = 0
             clearInterval(gravity);
             showEndMenu();
