@@ -277,7 +277,7 @@ let shapes = [
 ];
 
 let compteurs = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]; // conpte le nombre de bloque par ligne
-let score = 0; // Score du joueur
+let score = 0; // Score du joueur (max : 999999)
 let highScore = 0; // hight Score du moment
 let piece = 0; // 
 let abscisse = 3; // position horizontale de la pièce
@@ -391,8 +391,20 @@ function replaceRows() {
             cpt += 1;
         }
     }
-    score = score + (100 * cpt);
-    scoreAff.innerHTML = score;
+
+    if (cpt === 2) {
+        score = score + 300;
+        scoreAff.innerHTML = score;
+    } else if (cpt === 3) {
+        score = score + 500;
+        scoreAff.innerHTML = score;
+    } else if (cpt === 4) {
+        score = score + 1000;
+        scoreAff.innerHTML = score;
+    } else if (cpt===1) {
+        score = score + 100;
+        scoreAff.innerHTML = score; 
+    }
     renderGrid();
 }
 
@@ -596,6 +608,8 @@ document.addEventListener("keydown", (event)  => {
         turnLeft();
     } else if (event.code == "KeyD") {
         turnRight();
+    } else if (event.code == "Space") {
+        turnLeft();
     }
 });
 
@@ -616,9 +630,6 @@ function Jeu() {
                     clearInterval(gravity);
                     showEndMenu();
                 } else {
-                    // Ajout score piece ect...
-                    score += 10;
-                    scoreAff.innerHTML = score;
                     renderPiece(piece, abscisse, ordonnee, position);
                     newPiece = true;
                 }
@@ -627,9 +638,6 @@ function Jeu() {
                 renderPiece(piece, abscisse, ordonnee, position);
             }
         } else {
-            // Ajout score piece ect...
-            score += 10;
-            scoreAff.innerHTML = score;
             newPiece= true;
         }
 
