@@ -357,22 +357,22 @@ function renderGridNext(nbr1, nbr2) {
     }
 }
 
-function renderPiece(nbr, abs, ord, pos) {
-    for (let y=0; y < shapes[nbr][pos].length; y++) {
-        for (let x=0; x < shapes[nbr][pos][y].length; x++) {
-            if (grid[ord+y][abs+x] === 0) {
-                grid[ord+y][abs+x] = shapes[nbr][pos][y][x];
+function renderPiece() {
+    for (let y=0; y < shapes[piece][position].length; y++) {
+        for (let x=0; x < shapes[piece][position][y].length; x++) {
+            if (grid[ordonnee+y][abscisse+x] === 0) {
+                grid[ordonnee+y][abscisse+x] = shapes[piece][position][y][x];
             } 
         }
     }
     renderGrid();
 }
 
-function clearPiece(nbr, abs, ord, pos) {
-    for (let y=0; y < shapes[nbr][pos].length; y++) {
-        for (let x=0; x < shapes[nbr][pos][y].length; x++) {
-            if (shapes[nbr][pos][y][x] !==0) {
-                grid[ord+y][abs+x] = 0;
+function clearPiece() {
+    for (let y=0; y < shapes[piece][position].length; y++) {
+        for (let x=0; x < shapes[piece][position][y].length; x++) {
+            if (shapes[piece][position][y][x] !==0) {
+                grid[ordonnee+y][abscisse+x] = 0;
             } 
         }
     }
@@ -426,24 +426,24 @@ function showEndMenu () {
 }
 
 // Fonctionnement ------------------------------------------------------------------------------------------------------
-function checkBottom(nbr, pos) {
+function checkBottom() {
     //Colision du dessous
-    let hauteur = shapes[nbr][pos].length-1;
-    if(nbr === 1 && pos === 3) {
+    let hauteur = shapes[piece][position].length-1;
+    if(piece === 1 && position === 3) {
         if ((grid[ordonnee + hauteur + 1][abscisse + 1] !== 0) || (grid[ordonnee + hauteur - 1][abscisse] !== 0)) {
             return true;
         }
-    } else if (nbr === 2 && pos === 1) {
+    } else if (piece === 2 && position === 1) {
         if ((grid[ordonnee + hauteur + 1][abscisse] !== 0) || (grid[ordonnee + hauteur - 1][abscisse + 1] !== 0)) {
             return true;
         }
     } else {
-        for (let x=0; x<shapes[nbr][pos][hauteur].length; x++) {
-            if (shapes[nbr][pos][hauteur][x] === nbr+1) {
+        for (let x=0; x<shapes[piece][position][hauteur].length; x++) {
+            if (shapes[piece][position][hauteur][x] === piece+1) {
                 if (grid[ordonnee + hauteur + 1][abscisse + x] !== 0) {
                     return true;
                 }
-            } else if (shapes[nbr][pos][hauteur][x] === 0) {
+            } else if (shapes[piece][position][hauteur][x] === 0) {
                 if (grid[ordonnee + hauteur][abscisse + x] !== 0) {
                     return true;
                 }
@@ -453,22 +453,22 @@ function checkBottom(nbr, pos) {
     return false;
 }
 
-function checkLeft(nbr, pos) {
-    if (nbr === 1 && pos === 0) {
+function checkLeft() {
+    if (piece === 1 && position === 0) {
         if(grid[ordonnee][abscisse+1] !== 0 || grid[ordonnee+1][abscisse-1] !== 0) {
             return true
         }
-    } else if (nbr === 2 && pos === 2) {
+    } else if (piece === 2 && position === 2) {
         if(grid[ordonnee][abscisse-1] !== 0 || grid[ordonnee+1][abscisse+1] !== 0) {
             return true
         }
     } else {
-        for (let y = 0; y<shapes[nbr][pos].length; y++) {
-            if (shapes[nbr][pos][y][0] === nbr+1) {
+        for (let y = 0; y<shapes[piece][position].length; y++) {
+            if (shapes[piece][position][y][0] === piece+1) {
                 if (grid[ordonnee+y][abscisse-1] !==0) {
                     return true;
                 }
-            } else if (shapes[nbr][pos][y][0] === 0) {
+            } else if (shapes[piece][position][y][0] === 0) {
                 if (grid[ordonnee+y][abscisse] !==0) {
                     return true;
                 } 
@@ -478,24 +478,24 @@ function checkLeft(nbr, pos) {
     return false;
 }
 
-function checkRight(nbr, pos) {
-    let hauteur = shapes[nbr][pos].length-1;
-    let largeur = shapes[nbr][pos][0].length-1;
-    if (nbr === 1 && pos === 2) {
+function checkRight() {
+    let hauteur = shapes[piece][position].length-1;
+    let largeur = shapes[piece][position][0].length-1;
+    if (piece === 1 && position === 2) {
         if(grid[ordonnee][abscisse+largeur+1] !== 0 || grid[ordonnee+1][abscisse+largeur-1] !== 0) {
             return true
         }
-    } else if (nbr === 2 && pos === 0) {
+    } else if (piece === 2 && position === 0) {
         if(grid[ordonnee][abscisse + largeur-1] !== 0 || grid[ordonnee+1][abscisse+largeur+1] !== 0) {
             return true
         }
     } else {
-        for (let y = 0; y<shapes[nbr][pos].length; y++) {
-            if (shapes[nbr][pos][y][largeur] === nbr+1) {
+        for (let y = 0; y<shapes[piece][position].length; y++) {
+            if (shapes[piece][position][y][largeur] === piece+1) {
                 if (grid[ordonnee+y][abscisse + largeur +1] !==0) {
                     return true;
                 }
-            } else if (shapes[nbr][pos][y][largeur] === 0) {
+            } else if (shapes[piece][position][y][largeur] === 0) {
                 if (grid[ordonnee+y][abscisse + largeur] !==0) {
                     return true;
                 } 
@@ -518,30 +518,30 @@ function checkTurn() {
 
 
 function moveLeft() {
-    clearPiece(piece, abscisse, ordonnee, position);
+    clearPiece();
     if (abscisse>0) {
         if (!checkLeft(piece, position)) {
             abscisse -= 1;
         }
     }
-    renderPiece(piece, abscisse, ordonnee, position);
+    renderPiece();
 }
 
 function moveRight() {
-    clearPiece(piece, abscisse, ordonnee, position);
+    clearPiece();
     nbr = 10-shapes[piece][position][0].length;
     if (abscisse<nbr) {
-        if (!checkRight(piece, position)) {
+        if (!checkRight()) {
             abscisse += 1;
         }
     }
-    renderPiece(piece, abscisse, ordonnee, position);
+    renderPiece();
 }
 
 function turnRight() {
     let vrai = true;
     let posi =  position;
-    clearPiece(piece, abscisse, ordonnee, position);
+    clearPiece();
     if (position === 3) {
         position = 0;
     } else {
@@ -559,7 +559,7 @@ function turnRight() {
     if (!vrai) {
         position = posi
     }
-    renderPiece(piece, abscisse, ordonnee, position);
+    renderPiece();
 }
 
 function turnLeft() {
@@ -599,10 +599,10 @@ function reset() {
     gameOn = true;
 }
 
-function compter(nbr, abs, ord, pos) {
-    for (let y = 0; y < shapes[nbr][pos].length; y++) {
-        for (let x = 0; x <shapes[nbr][pos][y].length; x++) {
-            if (shapes[nbr][pos][y][x] !== 0) {
+function compter() {
+    for (let y = 0; y < shapes[piece][position].length; y++) {
+        for (let x = 0; x <shapes[piece][position][y].length; x++) {
+            if (shapes[piece][position][y][x] !== 0) {
                 compteurs[ordonnee+y] += 1;
             }
         }
@@ -639,7 +639,7 @@ document.addEventListener("keydown", (event)  => {
 
 function Jeu() {
     piece = Math.floor(Math.random() * 7);
-    renderPiece(piece, abscisse, ordonnee, position);
+    renderPiece();
 
     let nbr1 = Math.floor(Math.random() * 7);
     let nbr2 = Math.floor(Math.random() * 7);
@@ -648,18 +648,18 @@ function Jeu() {
 
     var gravity = setInterval(function gravit() {
         if (ordonnee < 19 - shapes[piece][position].length) {
-            clearPiece(piece, abscisse, ordonnee, position);
-            if (checkBottom(piece, position)) {
+            clearPiece();
+            if (checkBottom()) {
                 if (ordonnee === 0) {
                     clearInterval(gravity);
                     showEndMenu();
                 } else {
-                    renderPiece(piece, abscisse, ordonnee, position);
+                    renderPiece();
                     newPiece = true;
                 }
             } else {
                 ordonnee+=1;
-                renderPiece(piece, abscisse, ordonnee, position);
+                renderPiece();
             }
         } else {
             newPiece= true;
@@ -668,7 +668,7 @@ function Jeu() {
 
         if (newPiece) {
             // Remplacer les lignes 
-            compter(piece, abscisse, ordonnee, position);
+            compter();
             replaceRows();
             piece = nbr1;
             nbr1 = nbr2;
@@ -677,8 +677,8 @@ function Jeu() {
             abscisse = 3;
             ordonnee = 0;
             position = 0;
-            newPiece = false
-            renderPiece(piece, abscisse, ordonnee, position);
+            newPiece = false;
+            renderPiece();
         }
     },500);
 }
