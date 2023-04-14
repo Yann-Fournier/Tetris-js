@@ -505,6 +505,18 @@ function checkRight(nbr, pos) {
     return false;
 }
 
+function checkTurn() {
+    for (let y = 0; y<shapes[piece][position].length; y++) {
+        for (let x = 0; x<shapes[piece][position][y].length; x++) {
+            if (shapes[piece][position][y][x] !== 0 && grid[ordonnee+y][abscisse+x] !== 0) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+
 function moveLeft() {
     clearPiece(piece, abscisse, ordonnee, position);
     if (abscisse>0) {
@@ -538,6 +550,12 @@ function turnRight() {
     if (abscisse > 10 - shapes[piece][position][0].length) {
         vrai = false
     }
+    if (ordonnee > 19-shapes[piece][position].length) {
+        vrai = false;
+    }
+    if(checkTurn()) {
+        vrai = false;
+    }
     if (!vrai) {
         position = posi
     }
@@ -555,6 +573,12 @@ function turnLeft() {
     }
     if (abscisse > 10 - shapes[piece][position][0].length) {
         vrai = false
+    }
+    if (ordonnee > 19-shapes[piece][position].length) {
+        vrai = false;
+    }
+    if(checkTurn()) {
+        vrai = false;
     }
     if (!vrai) {
         position = posi
