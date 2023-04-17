@@ -110,7 +110,7 @@ ti.fillRect(350, 64, 15, 15);
 
 // Jeu *********************************************************************************************
 // Variables ---------------------------------------------------------------------------------------------
-function Grid() {
+function Grid() { // grille de depart
     let grid = [
         [0,0,0,0,0,0,0,0,0,0],
         [0,0,0,0,0,0,0,0,0,0],
@@ -135,7 +135,7 @@ function Grid() {
     return grid;
 }
 
-function nextGrid() {
+function nextGrid() { // grid de depart des prochaines pieces
     let nextgrid = [
         [0,0,0,0],
         [0,0,0,0],
@@ -151,14 +151,14 @@ let nextgrid = nextGrid(); // grille des pièces suivantes
 
 // tableau des différentes couleurs utilisées
 let colors = [
-    "#565656", // Gris
-    "#3AFEF4", // Bleu Clair
-    "#FAB33A", // Orange
-    "#3A55FA", // Bleu Foncé
-    "#EEFA3A", // Jaune
-    "#DB3AFA", // Violet
-    "#FA5C3A", // Rouge
-    "#59FA3A" // Vert
+    "#565656", // Gris (0)
+    "#3AFEF4", // Bleu Clair (1)
+    "#FAB33A", // Orange (2)
+    "#3A55FA", // Bleu Foncé (3)
+    "#EEFA3A", // Jaune (4)
+    "#DB3AFA", // Violet (5)
+    "#FA5C3A", // Rouge (6)
+    "#59FA3A" // Vert (7)
 ];
 
 // Tableau avec toutes les pièces et leurs positions
@@ -276,23 +276,27 @@ let shapes = [
     ],
 ];
 
-let compteurs = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]; // conpte le nombre de bloque par ligne
 let score = 0; // Score du joueur (max : 999999)
 let highScore = 0; // hight Score du moment
 let piece = 0; // 
 let abscisse = 3; // position horizontale de la pièce
 let ordonnee = 0; // position verticale de la pièce
 let position = 0; // orientation de la pièce
-var newPiece = false // pour indiquer au programme de générer une nouvelle pièce
+let compteurs = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]; // conpte le nombre de bloque par ligne
+var newPiece = false; // pour indiquer au programme de générer une nouvelle pièce
+var gameOn = false;
 
 // Affichage ---------------------------------------------------------------------------------------------
+// Rendu html et css du Tetris
+// Grille de jeu
 var grille = document.getElementById("gille");
 var tetris = document.createElement("canvas");
-grille.appendChild(tetris)
+grille.appendChild(tetris);
 tetris.width = 210;
 tetris.height = 399;
-let ctx = tetris.getContext("2d")
+let ctx = tetris.getContext("2d");
 
+// Div des infos (score, prochaines pieces)
 var info = document.getElementById("info");
 var scoreText =  document.createElement("div");
 scoreText.innerHTML = "Score";
@@ -314,6 +318,7 @@ info.appendChild(scoreAff);
 info.appendChild(nextText);
 info.appendChild(next);
 
+// Permet d'afficher la grille dans le canvas
 function renderGrid() {
     ctx.clearRect(0, 0, tetris.width, tetris.height);
     ctx.fillStyle = "#000000";
@@ -326,8 +331,9 @@ function renderGrid() {
     }
 }
 
-renderGrid();
+renderGrid(); // premier affichage (vide)
 
+// Permet d'afficher les prochaines pieces
 function renderGridNext(nbr1, nbr2) {
     nextctx.clearRect(0, 0, next.width, next.height);
     nextgrid = nextGrid();
@@ -357,6 +363,7 @@ function renderGridNext(nbr1, nbr2) {
     }
 }
 
+// Permet d'afficher les pieces aux bonnes coordonnées (on remplaces les numéro et on affiche la grille)
 function renderPiece() {
     for (let y=0; y < shapes[piece][position].length; y++) {
         for (let x=0; x < shapes[piece][position][y].length; x++) {
@@ -368,6 +375,7 @@ function renderPiece() {
     renderGrid();
 }
 
+// Permet d'effacer la piece aux coordonnées données
 function clearPiece() {
     for (let y=0; y < shapes[piece][position].length; y++) {
         for (let x=0; x < shapes[piece][position][y].length; x++) {
@@ -379,6 +387,7 @@ function clearPiece() {
     renderGrid();
 }
 
+// Permet Enlever les lignes quand elles sont completes et ajouter score
 function replaceRows() {
     let ligneGrid = [0,0,0,0,0,0,0,0,0,0];
     let cpt = 0;
@@ -408,14 +417,19 @@ function replaceRows() {
     renderGrid();
 }
 
+// Permet d'affichager menu de démarrage
 function hideStartMenu () {
     document.getElementById('start-menu').style.display = 'none';
+    gameOn = true
 }
 
+// Permet de cacher le menu de fin
 function hideEndMenu () {
     document.getElementById('end-menu').style.display = 'none';
+    gameOn = true
 }
 
+// Permat d'afficher le menu de fin
 function showEndMenu () {
     document.getElementById('end-menu').style.display = 'block';
     document.getElementById('end-score').innerHTML = score;
@@ -426,8 +440,8 @@ function showEndMenu () {
 }
 
 // Fonctionnement ------------------------------------------------------------------------------------------------------
+// Permet de gérer les collisions du dessous
 function checkBottom() {
-    //Colision du dessous
     let hauteur = shapes[piece][position].length-1;
     if(piece === 1 && position === 3) {
         if ((grid[ordonnee + hauteur + 1][abscisse + 1] !== 0) || (grid[ordonnee + hauteur - 1][abscisse] !== 0)) {
@@ -453,6 +467,7 @@ function checkBottom() {
     return false;
 }
 
+// Permet de gérer les collisions à gauche 
 function checkLeft() {
     if (piece === 1 && position === 0) {
         if(grid[ordonnee][abscisse+1] !== 0 || grid[ordonnee+1][abscisse-1] !== 0) {
@@ -478,6 +493,7 @@ function checkLeft() {
     return false;
 }
 
+// permet de gérer les collisions à droite 
 function checkRight() {
     let hauteur = shapes[piece][position].length-1;
     let largeur = shapes[piece][position][0].length-1;
@@ -505,6 +521,7 @@ function checkRight() {
     return false;
 }
 
+// permet de gérer les collisions avant de tourner la pièce
 function checkTurn() {
     for (let y = 0; y<shapes[piece][position].length; y++) {
         for (let x = 0; x<shapes[piece][position][y].length; x++) {
@@ -516,7 +533,7 @@ function checkTurn() {
     return false;
 }
 
-
+// Permet de bouger vers la gauche
 function moveLeft() {
     clearPiece();
     if (abscisse>0) {
@@ -527,6 +544,7 @@ function moveLeft() {
     renderPiece();
 }
 
+// Permet de bouger vers la droite
 function moveRight() {
     clearPiece();
     nbr = 10-shapes[piece][position][0].length;
@@ -538,6 +556,7 @@ function moveRight() {
     renderPiece();
 }
 
+// Permet de tourner vers la droite 
 function turnRight() {
     let vrai = true;
     let posi =  position;
@@ -562,6 +581,7 @@ function turnRight() {
     renderPiece();
 }
 
+// Permet de tourner vers la gauche
 function turnLeft() {
     let vrai = true;
     let posi =  position;
@@ -586,6 +606,7 @@ function turnLeft() {
     renderPiece(piece, abscisse, ordonnee, position);
 }
 
+// Permet de réinitialiser les variable
 function reset() {
     grid = Grid();
     nextgrid = nextGrid();
@@ -596,9 +617,10 @@ function reset() {
     abscisse = 3;
     ordonnee = 0;
     position = 0;
-    gameOn = true;
+    gameOn = false;
 }
 
+// Permet de compter combien de block il y a dans chaque ligne (utiliser avec replaceRows())
 function compter() {
     for (let y = 0; y < shapes[piece][position].length; y++) {
         for (let x = 0; x <shapes[piece][position][y].length; x++) {
@@ -624,20 +646,24 @@ document.getElementById('restart').addEventListener('click', function() {
 
 //Event listener ************************************************************************************
 document.addEventListener("keydown", (event)  => {
-    if (event.code === "ArrowLeft"){
-       moveLeft();
-    } else if (event.code == "ArrowRight"){
-        moveRight();
-    } else if (event.code == "KeyA") {
-        turnLeft();
-    } else if (event.code == "KeyD") {
-        turnRight();
-    } else if (event.code == "Space") {
-        turnLeft();
+    if (gameOn) { // seulement si le jeu est en court
+        if (event.code === "ArrowLeft"){
+            moveLeft();
+        } else if (event.code == "ArrowRight"){
+            moveRight();
+        } else if (event.code == "KeyA") {
+            turnLeft();
+        } else if (event.code == "KeyD") {
+            turnRight();
+        } else if (event.code == "Space") {
+            turnLeft();
+        }
     }
 });
 
+// fonction principale du jeu
 function Jeu() {
+    // génerer aléatoirement les premières pièces
     piece = Math.floor(Math.random() * 7);
     renderPiece();
 
@@ -645,7 +671,7 @@ function Jeu() {
     let nbr2 = Math.floor(Math.random() * 7);
     renderGridNext(nbr1, nbr2);
     
-
+    // boucle qui permet de jouer
     var gravity = setInterval(function gravit() {
         if (ordonnee < 19 - shapes[piece][position].length) {
             clearPiece();
@@ -665,9 +691,13 @@ function Jeu() {
             newPiece= true;
         }
 
+        if(score >= 999999) {
+            clearInterval(gravity);
+            showEndMenu();
+        }
 
+        // Nouvelle piece
         if (newPiece) {
-            // Remplacer les lignes 
             compter();
             replaceRows();
             piece = nbr1;
