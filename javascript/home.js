@@ -657,6 +657,8 @@ document.addEventListener("keydown", (event)  => {
             turnRight();
         } else if (event.code == "Space") {
             turnLeft();
+        } else if (event.code == "ArrowDown") {
+
         }
     }
 });
@@ -666,11 +668,9 @@ function Jeu() {
     // génerer aléatoirement les premières pièces
     piece = Math.floor(Math.random() * 7);
     renderPiece();
-
     let nbr1 = Math.floor(Math.random() * 7);
     let nbr2 = Math.floor(Math.random() * 7);
     renderGridNext(nbr1, nbr2);
-    
     // boucle qui permet de jouer
     var gravity = setInterval(function gravit() {
         if (ordonnee < 19 - shapes[piece][position].length) {
@@ -690,12 +690,10 @@ function Jeu() {
         } else {
             newPiece= true;
         }
-
         if(score >= 999999) {
             clearInterval(gravity);
             showEndMenu();
         }
-
         // Nouvelle piece
         if (newPiece) {
             compter();
